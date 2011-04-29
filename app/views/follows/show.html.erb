@@ -1,0 +1,119 @@
+<h1><%= "#{@home.ublog_name} Subscriptions" %></h1>
+
+<div id="Notfication">
+<% if @owned %>
+  Set Email notification period:&nbsp
+  <% form_tag(home_follow_path(@home), :method => :put) do %>
+  <%= select :home, :notify_calendar, @calendar %>
+  <% if @group %>
+    <%= label_tag " to this email list:" %>
+    <%= text_field_tag "email_list", @home.email_list %> 
+    <%= label_tag "@#{DOMAIN}.com" %>
+  <% end %>
+  <%= submit_tag("Set") %>
+  <% end %>
+<p>
+</p>
+<% else %>
+  <p>
+    <%= link_to("Manage my subscriptions", home_follow_path(@visitor_home)) %>
+  <p>
+<% end %>
+</div>
+
+<% unless @group %>
+<div id="friends">
+<b>Following users/groups:</b> <%= count = @friends.length %><br />
+<% if (count > 0) %>
+  <table>
+  <% for friend in @friends %>
+  <tr>
+  <td><%= link_to h(friend.friend_home.ublog_name), home_path(friend.friend_home) if friend && friend.friend_home %></td>
+  <% if @owned %>
+  <td>
+    <% form_for(friend) do |f| %>
+      <%= f.hidden_field :email_notify, {:value => "1"} %>
+    <%= f.submit "Enable email", :disabled => (friend.email_notify && (friend.email_notify > 0)) %>
+    <% end %>
+  </td>
+  <td>
+    <% if (friend.email_notify && (friend.email_notify > 0)) %>
+    <% form_for(friend) do |f| %>
+      <%= f.hidden_field :email_notify, {:value => "0"} %>
+    <%= f.submit "Disable email" %>
+    <% end %>
+    <% end %>
+  </td>
+  <% end %>
+  </tr>
+  <% end %>
+  </table>
+<% end %>
+<br />
+
+<b>Following tags:</b> <%= count = @tagsubs.length %><br />
+<% if (count > 0) %>
+  <table>
+  <% for tagsub in @tagsubs %>
+  <tr>
+  <td><%= link_to h(tagsub.tag.name), tag_path(tagsub.tag) if tagsub && tagsub.tag %></td>
+  <% if @owned %>
+  <td>
+    <% form_for(tagsub) do |f| %>
+      <%= f.hidden_field :email_notify, {:value => "1"} %>
+    <%= f.submit "Enable email", :disabled => (tagsub.email_notify && (tagsub.email_notify > 0)) %>
+    <% end %>
+  </td>
+  <td>
+    <% if (tagsub.email_notify && (tagsub.email_notify > 0)) %>
+    <% form_for(tagsub) do |f| %>
+      <%= f.hidden_field :email_notify, {:value => "0"} %>
+    <%= f.submit "Disable email" %>
+    <% end %>
+    <% end %>
+  </td>
+  <% end %>
+  </tr>
+  <% end %>
+  </table>
+<% end %>
+<br />
+<% end %>
+
+<b>Followed by:</b> <%= @followers.length %><br />
+<% if (@followers.length > 0) %>
+  <table>
+  <% for friend in @followers %>
+  <% owner = friend.origin.ublog_name == @home.owner %>
+  <tr>
+  <td><%= link_to h(friend.origin.ublog_name), home_path(friend.origin) if friend.origin %></td>
+  <%= "<td>Owner</td>" if owner %>
+  <% if @member && !owner %>
+  <td>
+    <% form_for(friend) do |f| %>
+      <%= f.hidden_field :is_approved, {:value => "1"} %>
+    <%= f.submit "Approve", :disabled => (friend.is_approved && (friend.is_approved > 0)) %>
+    <% end %>
+  </td>
+  <td>
+    <% if (friend.is_approved && (friend.is_approved > 0)) %>
+    <% form_for(friend) do |f| %>
+      <%= f.hidden_field :is_approved, {:value => "0"} %>
+    <%= f.submit "Remove" %>
+    <% end %>
+    <% end %>
+  </td>
+  <% end %>
+  </tr>
+  <% end %>
+  </table>
+<% end %>
+</div>
+
+<div>
+<% if @group %>
+  <br /><%= link_to("Back to #{@home.ublog_name}", home_path(@home)) %>
+<% else %>
+  <br /><%= link_to('Back to my account', home_path(@home)) %>
+<% end %>
+</div>

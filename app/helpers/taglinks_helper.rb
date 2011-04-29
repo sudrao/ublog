@@ -1,0 +1,2 @@
+module TaglinksHelper
+end

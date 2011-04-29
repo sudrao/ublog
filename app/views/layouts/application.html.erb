@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Expires" CONTENT="-1">
+	<link rel="icon" type="image/png" href="/images/u.png">
+	<title>ublog<%= @title &&= " | #{@title}" %></title>
+  <%= stylesheet_link_tag 'ublog' %>
+  <%= stylesheet_link_tag 'modalbox' %>
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag 'modalbox' %>
+  <%= auto_discovery_link_tag(:atom, {:format => "atom"}, {:title => "#{@home.ublog_name}'s atom 1.0 feed"}) if @home %>
+  <%= auto_discovery_link_tag(:rss, {:format => "rss"}, {:title => "#{@home.ublog_name}'s rss 2.0 feed"}) if @home %>
+</head>
+<body>
+
+<%= render :partial => "layouts/header.html.erb" %>
+
+<% if @rss_display %>
+<div id="rss-div">
+  <span class="rss-symbol">
+    <a href="#" onclick="Effect.toggle('rss_appear', 'appear'); return false;"><%= image_tag "feed.png", :title => "RSS feeds" %></a>
+  </span>
+  <div id="rss_appear" style="display:none;">
+     <div>
+       <b>Feed URL's for this page:</b><br />
+       <%= request.url + ".atom<br />" + request.url + ".rss" %>
+     </div>
+  </div>
+</div>
+<% end %>
+
+<p><span id="notice"><%= flash[:notice] %></span></p>
+<p><span id="error"><%= flash[:error] %></span></p>
+<%= yield  %>
+
+</body>
+<head>
+  <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Expires" CONTENT="-1">
+</head>
+</html>

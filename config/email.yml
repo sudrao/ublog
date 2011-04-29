@@ -1,0 +1,9 @@
+development:
+  :address: outbound.#{DOMAIN}.com
+  :port: 25
+  :domain: #{DOMAIN}.com
+production:
+  :address: outbound.#{DOMAIN}.com
+  :port: 25
+  :domain: #{DOMAIN}.com
+

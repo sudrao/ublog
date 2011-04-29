@@ -1,0 +1,62 @@
+<% if @twitter %>
+  <% site = "Twitter"; tag = "#twt" %>
+<% else %>
+  <% site = "Yammer"; tag = "#yam" %>
+<% end %>
+
+<h2><%=h "#{site} access for " + @visitor_home.ublog_name %></h2>
+
+<% if (!@twitter and @visitor_home.yammer_token) or (@twitter and @visitor_home.twitter_token) %>
+<b>You have enabled access to <%= site %> from ublog.</b>
+<p>
+Use tags in your ublog and <%= site %> messages to cross-post when you want the message to appear on both sites.<br />
+When posting from ublog, use <%= tag %> in your message. When posting from <%= site %>, use #ublog in your message. <br />
+These tags will cause the message to be repeated on the other site. Expect a few minutes delay before the cross-post appears.<br />
+You do not need to do anything more on <%= site %> to enable this feature, but check the note below.
+</p>
+<p>
+Please be aware of <b>Company's security policy</b> for posting on <%= site %> and other sites. No Company confidential information <br />
+may be cross-posted at this time. There may be additional restrictions. <br />
+</p>
+<% if @twitter %>
+  <p>
+  Please review Company's Blog policy before posting or cross-posting on Twitter: 
+  <%= link_to "Company_Blog_Policy.pdf", "http://www.#{DOMAIN}.com/FinAdm/ics/ethics/erc/docs/Company_Blog_Policy.pdf" %>.
+  </p>
+  <p>
+  <b>Note:</b> ublog does not verify the Twitter screen name that you provided (<%= @visitor_home.twitter_name %>) matches the Twitter credentials<br />
+  you used to log in and verify ublog on Twitter. But they do need to match.
+  </p>
+  <br /><br />
+  <%= link_to("Disable Twitter Access", twitter_path, :method => :delete) %> if you no longer want cross-posting.
+<% else %>
+  <p>
+  Please check the Yammer entry on 
+  <%= link_to "Companypedia", "http://#{DOMAIN}pedia.#{DOMAIN}.com/display/cpda/Yammer" %> for more security information.
+  </p>
+  <p>
+  <b>Note:</b> ublog assumes you have used your standard Company email address when registering with Yammer. <br />
+  For example, jdoe@#{DOMAIN}.com. If you used another Company email address, like john.doe@#{DOMAIN}.com, cross-posting will not work.<br />
+  If you need to change the email address on Yammer, check with Yammer support.
+  </p>
+  <br /><br />
+  <%= link_to("Disable Yammer Access", yammer_path, :method => :delete) %> if you no longer want cross-posting.
+<% end %>
+
+<% else %>
+  <% if @twitter %>
+  You have NOT yet enabled access to Twitter from ublog.
+  <br><br>
+    <%= link_to("Enable", new_twitter_path) %> To enable cross posting between ublog and Twitter.<br>
+  <% else %>
+  You have NOT yet enabled access to Yammer from ublog.
+  <br><br>
+    <%= link_to("Enable", new_yammer_path) %> To enable cross posting between ublog and Yammer.<br>
+  <% end %>
+<% end %>
+
+
+<br />
+<br />
+<br />
+<%= link_to('Back to my account', home_path(@visitor_home)) %>

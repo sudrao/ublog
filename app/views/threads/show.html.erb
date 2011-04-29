@@ -1,0 +1,17 @@
+<div id="top-bar">
+<p>
+<%= link_to('News', home_path(@news)) if @news %>&nbsp&nbsp
+<%= link_to('Feedback', home_path(@feedback)) if @feedback %>&nbsp&nbsp
+<%= link_to 'Groups', groups_path %>&nbsp&nbsp
+<%= link_to 'Tags', tags_path %>&nbsp&nbsp
+<%= link_to 'Subs', home_follow_path(@home) %>
+</p>
+</div>
+
+<div <%= 'id="main_content"' unless session[:narrow_view] %>>
+<div>
+<%= render :partial => "homes/blog_table.html.erb", :locals => { :reply => true } %>
+</div>
+</div>
+
+<%= link_to "Back", @home %>

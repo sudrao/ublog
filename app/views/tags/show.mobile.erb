@@ -1,0 +1,37 @@
+<div id="top-bar">
+<p>
+<%= link_to('News', home_path(@news)) if @news %>&nbsp&nbsp
+<%= link_to('Feedback', home_path(@feedback)) if @feedback %>&nbsp&nbsp
+<%= link_to 'Groups', groups_path %>&nbsp&nbsp
+<%= link_to 'Timeline', all_path %>
+</p>
+</div>
+
+<div>
+  <%= render :partial => "tags/tag_follow.html.erb" %>
+</div>
+
+<div>
+<table>
+  <tr>
+    <td colspan="3" class="uline"></td>
+  </tr>
+<% for blog in @blogs %>
+<%= render :partial => "homes/blog.html.erb", :locals => { :blog => blog, 
+  :home_id => @home.id, :owned_account => @owned_account, 
+  :author_id => @new_blog.home_id, :mobile => true, :reply => true } %>
+<% end %>
+</table>
+</div>
+
+<%= render :partial => "homes/pages.html.erb" %>
+
+</div>
+
+<div>
+<br /><%= link_to('Back to my account', home_path(@home)) %>
+</div>
+
+<div id="footer">
+<p>ublog is developed and brought to you by the <a href="http://www.#{DOMAIN}.com">Ruby on Rails</a> group in Company.</p>
+</div>

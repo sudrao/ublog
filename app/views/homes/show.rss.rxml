@@ -1,0 +1,23 @@
+xml.instruct! :xml, :version=>"1.0" 
+xml.rss(:version=>"2.0"){
+  xml.channel{
+    xml.title("ublog")
+    xml.link(homes_url)
+    xml.description("#{@home.ublog_name}'s RSS 2.0 feed")
+    xml.language('en-us')
+      home_id = @home.id
+      for blog in @blogs
+        origin = blog.origin
+        next unless origin
+        xml.item do
+          xml.title("#{origin.ublog_name}: #{blog.content}")
+          html_desc = link_to(h(origin.ublog_name), home_path(origin)) + ' ' + blog.webify()
+          xml.description(html_desc, :type => 'html')      
+          xml.author(blog.origin.ublog_name)
+          xml.pubDate(blog.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
+          xml.link(polymorphic_url(@home))
+          xml.guid(polymorphic_url(@home))
+        end
+      end
+  }
+}
