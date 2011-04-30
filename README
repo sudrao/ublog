@@ -1,2 +1,9 @@
-Hello World! This is a modified file.
+ublog is a micro-blogging application meant for corporate use. This source code is a contribution from Cisco Systems, Inc.
+
+The current source is a clone of what is running in Cisco with some proprietary stuff removed. That means it probably will not work as is.
+
+Further, the code needs some work to port it to Rails 3. It was working under Rails 2.3.2. Some of the plugins and libraries it uses need to be updated or replaced to work under Rails 3.
+
+Feel free to fork.
+
 
