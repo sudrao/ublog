@@ -1,6 +1,6 @@
 class Blog < ActiveRecord::Base
-  validates_presence_of :content
-  validates_numericality_of :home_id, :on => :create, :greater_than => 0
+  validates :content, :home_id, :presence => true
+  validates :home_id, :numericality => {:on => :create, :greater_than => 0}
   belongs_to :origin, :class_name => "Home", :foreign_key => "home_id"
   belongs_to :to, :class_name => "Home", :foreign_key => "to_id"
   has_many :taglinks

@@ -4,9 +4,9 @@ class Ublogmail < ActionMailer::Base
   # Each statement below is an instance method call
   # which sets the corresponding parameter
   def enotify (recipient, blogs)
-    recipients recipient+'@#{DOMAIN}.com'
-    from       'ublog@#{DOMAIN}.com'
-    reply_to   'donotreply@#{DOMAIN}.com'
+    recipients recipient+'@cisco.com'
+    from       'ublog@cisco.com'
+    reply_to   'donotreply@cisco.com'
     subject    'ublog: update'
     sent_on    Time.now
     content_type 'text/html'
@@ -18,9 +18,9 @@ class Ublogmail < ActionMailer::Base
   end
 
   def nudge (home, blogs)
-    recipients home.email_list+'@#{DOMAIN}.com'
-    from       'ublog@#{DOMAIN}.com'
-    reply_to   'donotreply@#{DOMAIN}.com'
+    recipients home.email_list+'@cisco.com'
+    from       'ublog@cisco.com'
+    reply_to   'donotreply@cisco.com'
     subject    "ublog: #{home.ublog_name} group update"
     sent_on    Time.now
     content_type 'text/html'

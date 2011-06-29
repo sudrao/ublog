@@ -1,10 +1,9 @@
 class Home < ActiveRecord::Base
-  validates_uniqueness_of :ublog_name
-  validates_format_of :ublog_name, :with => /\A[^ $~!@#%^&*+=(){};':",?<>.]*\Z/, :message => " cannot have blanks or punctuation. Remove them. Check for trailing blanks."
-  validates_presence_of :owner
-  validates_presence_of :name
-  validates_format_of :email_list, :with => /\A[^ $~!@#%^&*+=(){};':",?<>.]*\Z/, :message => " cannot have @ or blanks or punctuation. Remove them. Check for trailing blanks."
-  
+  validates :ublog_name, :presence => true, :uniqueness => true
+  validates :ublog_name, :format => {:with => /\A[^ $~!@#%^&*+=(){};':",?<>.]*\Z/, :message => " cannot have blanks or punctuation. Remove them. Check for trailing blanks."}
+  validates :owner, :name, :presence => true
+  validates :email_list, :format => {:with => /\A[^ $~!@#%^&*+=(){};':",?<>.]*\Z/, :message => " cannot have @ or blanks or punctuation. Remove them. Check for trailing blanks."}
+ 
   has_one :asset # photo of owner
   
   has_many :blogs # as "owner" of those blogs

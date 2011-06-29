@@ -1,12 +1,5 @@
-lighttpd.conf
+.bundle
+db/*.sqlite3
+log/*.log
 tmp/
-log/
-database.yml
-public/assets
-public/thumbs
-public/uploads
-db/schema.rb
-*.xml
-filestore/
-public/tags.*
-*~
+solr

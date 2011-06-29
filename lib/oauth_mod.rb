@@ -10,7 +10,7 @@ class Base
   attr_accessor :proxy
   
   # Set proxy to nil before instantiating, if there is no proxy. Not tested
-  @@proxy = "http://proxy-sjc-1.#{DOMAIN}.com:8080"
+  @@proxy = "http://proxy-sjc-1.cisco.com:8080"
   
   def initialize(consumer_key, consumer_secret, site)
     @consumer = OAuth::Consumer.new(consumer_key, consumer_secret,

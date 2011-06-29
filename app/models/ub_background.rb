@@ -1,4 +1,4 @@
-require 'lib/yammer_api'
+require 'yammer_api'
 
 class UbBackground
   MAX_EMAIL_BLOGS = 1000
@@ -238,7 +238,7 @@ class UbBackground
   end
   
   def process (home)
-#    return unless home.ublog_name == "janedoe" # TESTING TESTING
+#    return unless home.ublog_name == "sudrao" # TESTING TESTING
     # compute the time range to collect blogs
     upper = Time.now.utc - 10.seconds
     lower = home.last_notified
