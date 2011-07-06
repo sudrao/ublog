@@ -4,3 +4,4 @@ log/*.log
 tmp/
 solr
 *.lock
+.project

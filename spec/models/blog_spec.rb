@@ -15,8 +15,7 @@ describe Blog do
     end
     
     it "passes validation with good input" do
-      h = Home.create(:ublog_name => "johndoe", :name => "John Doe",
-        :asset_id => 10, :owner => "someone")
+      h = Home.make! # use factory
       h.blogs.create(:content => "Howdy!").should have(:no).errors
     end
 end

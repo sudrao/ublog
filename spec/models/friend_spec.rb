@@ -2,10 +2,8 @@ require "spec_helper"
 
 describe Friend do
   before(:each) do
-    @h1 = Home.create(:ublog_name => "johndoe", :name => "John Doe",
-      :asset_id => 10, :owner => "someone")
-    @h2 = Home.create(:ublog_name => "janebull", :name => "Jane Bull",
-      :asset_id => 11, :owner => "other")    
+    @h1 = Home.make!
+    @h2 = Home.make!    
   end
 
   it "fails validation if friending self" do
