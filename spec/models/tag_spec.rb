@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "tags within blogs" do
+describe Tag, Taglink do
   # Note we are testing two models here:
   # tags and taglinks as they are related.
 

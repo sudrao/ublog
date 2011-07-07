@@ -28,3 +28,7 @@ end
 Blog.blueprint(:with_tag) do
   content { "Hello, my name is #syrah-#{sn}."}
 end
+
+Tag.blueprint do
+  name { "mytag-#{sn}" }
+end
