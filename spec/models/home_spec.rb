@@ -22,7 +22,6 @@ describe Home do
     end
     
     it "passes validation with good input" do
-      h = Home.create(:ublog_name => "johndoe", :name => "John Doe",
-        :asset_id => 10, :owner => "someone").should have(:no).errors
+      Home.make!.should have(:no).errors
     end
 end
