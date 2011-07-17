@@ -32,6 +32,6 @@ gem 'hpricot'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  gem "rspec-rails", "~> 2.4"
+  gem "rspec-rails", "~> 2.6"
   gem 'machinist', '>= 2.0.0.beta2'
 end
