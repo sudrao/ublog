@@ -29,30 +29,21 @@ describe Blog do
       return h, group     
     end
 
+    def make_priv_blogs(home, group, count=1)
+      b = Blog.make(count, :home_id => home.id, :to_id => group.id, :is_private => 1) # private
+      b.each { |bl| bl.save } # work around machinist inability to save even with make! above
+    end
+    
     it "returns all blogs in system except private ones", :one => true do
       Blog.make!(5) # non-private
       h, group = subscribers(1)
-      Blog.make!(2, :is_private => 1, :home_id => h.id, :to_id => group.id) # private
-      b = Blog.all_blogs(Home.make!)
-      b.count.should be(5)
+      h2 = Home.make!
+      make_priv_blogs(h2, group, 2)
+      make_priv_blogs(h, group, 3)
+      Blog.all_blogs(h2).count.should == 7
+      Blog.all_blogs(h).count.should == 10 # h also subscribed to group so gets h2 blogs
+      b = Blog.all_blogs(h2).each do |bl|
+        bl.content.should_not be_nil  # verify we can iterate over results
+      end
     end
-
-=begin
-   For some reason the count tests are not working. Private blogs are not getting
-   added within rspec but are there in rails console. Also, the records are not being
-   deleted (rolled back) after each example. 
-
-    it "returns all blogs in system including owned private ones", :one => true do
-      Blog.make!(3) # non-private
-      # Post some private blogs from other's account
-      h, group = subscribers(1)
-      Blog.make!(6, :home_id => h.id, :is_private => 1, :to_id => group.id)
-      # Post more private blogs from my account
-      h, group = subscribers(1)
-      Blog.make!(9, :home_id => h.id, :is_private => 1, :to_id => group.id)
-
-      b = Blog.all_blogs(h)
-      b.count.should be(12)
-    end
-=end
 end

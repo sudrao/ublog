@@ -15,7 +15,7 @@ class Blog < ActiveRecord::Base
     main_attachments ? main_attachments[0] : nil
   end
   
-  # Return all blogs except private ones. Unless the user has not subscribed 
+  # Return all blogs except private ones. Unless the user subscribed 
   # for those groups. Limit and order results
   # LEFT OUTER JOIN will return at least one copy of each blog
   # i.e. from the first mentioned table. This corresponds to "all blogs"
@@ -25,39 +25,20 @@ class Blog < ActiveRecord::Base
   # uniqueness of blogs.
   def self.all_blogs(home, page_size=25, offset=0)
     home_id = home.id
-    blogs_subset = "(SELECT * FROM blogs ORDER BY created_at DESC LIMIT 100)"
-
-    if (offset == 0)
-      # First try with last 10000 blogs to save time
-      result = find_every_by_sql(blogs_subset, home_id, page_size, offset)
-    end
-    if (offset > 0) or (result.length < page_size)
-      # With full database
-      result = find_every_by_sql("blogs", home_id, page_size, offset)      
-    end
-    result
+    b = Blog.arel_table
+    f = Friend.arel_table
+    
+    not_private = b[:is_private].eq(false)
+    own_blog = b[:home_id].eq(home_id)
+    subscribed = f[:home_id].eq(home_id).and(f[:is_approved].eq(true)).and(b[:is_private].eq(true))
+    
+    sql = joins('LEFT OUTER JOIN friends ON friends.friend_id = blogs.to_id').
+      where(not_private.or(own_blog).or(subscribed)
+        ).group(:id).order('blogs.created_at DESC').limit(page_size).offset(offset).to_sql
+        
+    find_by_sql(sql) # need this to work around group by generating a 2D array
   end
   
-  def self.find_every_by_sql(blogs_set, home_id, page_size, offset)
-    find_by_sql(
-   "SELECT b.* FROM #{blogs_set} AS b
-      -- return all fields from blogs
-    LEFT OUTER JOIN friends AS f
-      -- join with friends just to check conditions
-    ON f.friend_id = b.to_id
-      -- this blog is addressed to a friend
-    WHERE b.is_private IS NULL OR b.is_private <> 1 OR
-      -- and blog is not private
-    b.home_id = #{home_id} OR 
-      -- or blog is from this user
-    (f.home_id = #{home_id} AND
-    f.is_approved = 1 AND b.is_private = 1)
-      -- or blog is private but user has access to the private group
-    GROUP BY b.id
-    ORDER BY b.created_at DESC
-    LIMIT #{offset}, #{page_size};"
-    )
-  end
   # search for blogs to display for one user
   def self.mine (user_id, owned, fake_auth, home, page_size=25, offset=0)
     home_idval = home.id
