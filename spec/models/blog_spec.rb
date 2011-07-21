@@ -46,8 +46,8 @@ describe Blog do
         bl.content.should_not be_nil  # verify we can iterate over results
       end
     end
-    
-    it "returns my blogs", :one => true do
+
+    def make_more_blogs
       Blog.make!(5) # not mine, not subscribed
       h, g = subscribers(1) # my home and subscribed group
       h2 = Home.make! # another's home
@@ -58,6 +58,11 @@ describe Blog do
       g2 = Home.make! # other group
       make_blogs(h2, 7, false, g2) # other's public messages to unsubscribed group
       make_blogs(h2, 3, true, g2) # other's private messages to unsubscribed group
+      return h, g, h2, g2
+    end    
+    
+    it "returns my blogs", :one => true do
+      h, g, h2, g2 = make_more_blogs
       # On my home page
       b = Blog.mine(h.id, true, false, h) # get my blogs and subcribed blogs on my page
       b.count.should == 20
@@ -73,5 +78,15 @@ describe Blog do
       # Visiting group page as owner
       b = Blog.mine(h.id, true, false, g)
       b.count.should == 10
+    end
+    
+    it "returns my blogs marked for email delivery" do
+      h, g, h2, g2 = make_more_blogs
+      f = Friend.find_by_home_id(h.id)
+      f.email_notify = 1
+      f.save
+      h.friends.create(:friend_id => h2.id, :email_notify => true) # be friends with h2
+      b = Blog.my_email(h.id, 1.minute.ago.utc, Time.now.utc)
+      b.count.should == 16
     end
 end
