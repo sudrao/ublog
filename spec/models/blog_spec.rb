@@ -29,21 +29,49 @@ describe Blog do
       return h, group     
     end
 
-    def make_priv_blogs(home, group, count=1)
-      b = Blog.make(count, :home_id => home.id, :to_id => group.id, :is_private => 1) # private
+    def make_blogs(home, count=1, is_private=false, group=nil)
+      b = Blog.make(count, :home_id => home.id, :to_id => group.nil? ? nil:group.id, :is_private => is_private)
       b.each { |bl| bl.save } # work around machinist inability to save even with make! above
     end
     
-    it "returns all blogs in system except private ones", :one => true do
+    it "returns all blogs in system except private ones" do
       Blog.make!(5) # non-private
       h, group = subscribers(1)
       h2 = Home.make!
-      make_priv_blogs(h2, group, 2)
-      make_priv_blogs(h, group, 3)
+      make_blogs(h2, 2, true, group) # private by h2
+      make_blogs(h, 3, true, group) # private by h
       Blog.all_blogs(h2).count.should == 7
       Blog.all_blogs(h).count.should == 10 # h also subscribed to group so gets h2 blogs
       b = Blog.all_blogs(h2).each do |bl|
         bl.content.should_not be_nil  # verify we can iterate over results
       end
+    end
+    
+    it "returns my blogs", :one => true do
+      Blog.make!(5) # not mine, not subscribed
+      h, g = subscribers(1) # my home and subscribed group
+      h2 = Home.make! # another's home
+      make_blogs(h, 10) # mine, public
+      make_blogs(h, 1, true, g) # mine, private
+      make_blogs(h2, 4, true, g) # other's private messages to subscribed group
+      make_blogs(h2, 5, false, g) # other's public messages to subscribed group
+      g2 = Home.make! # other group
+      make_blogs(h2, 7, false, g2) # other's public messages to unsubscribed group
+      make_blogs(h2, 3, true, g2) # other's private messages to unsubscribed group
+      # On my home page
+      b = Blog.mine(h.id, true, false, h) # get my blogs and subcribed blogs on my page
+      b.count.should == 20
+      b.each do |bl|
+        bl.content.should_not be_nil
+      end
+      # Visiting another person's page
+      b = Blog.mine(h.id, false, false, h2) # look at other user's page
+      b.count.should == 16 # I can only see public blogs of other + private ones I am subscribed to
+      # RSS feed from my home page
+      b = Blog.mine(h.id, true, true, h) # fake authorization for rss feeds
+      b.count.should == 15 # only my public messages
+      # Visiting group page as owner
+      b = Blog.mine(h.id, true, false, g)
+      b.count.should == 10
     end
 end
