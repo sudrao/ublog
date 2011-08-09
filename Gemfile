@@ -11,6 +11,7 @@ gem 'mysql2', '< 0.3'
 gem 'net-ldap'
 gem 'oauth'
 gem 'hpricot'
+gem 'paperclip'
 
 # Use unicorn as the web server
 # gem 'unicorn'

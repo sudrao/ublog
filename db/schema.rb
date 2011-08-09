@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110705231052) do
+ActiveRecord::Schema.define(:version => 20110808175207) do
 
   create_table "assets", :force => true do |t|
     t.string   "filename"
@@ -89,7 +89,11 @@ ActiveRecord::Schema.define(:version => 20110705231052) do
     t.string   "twitter_name"
     t.string   "twitter_token"
     t.string   "twitter_secret"
-    t.integer  "twitter_last_id", :limit => 8
+    t.integer  "twitter_last_id",    :limit => 8
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   add_index "homes", ["twitter_token"], :name => "twitter_token_index"
