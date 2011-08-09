@@ -129,7 +129,7 @@ class HomesController < ApplicationController
     flash[:error] = "Not authorized" unless authorized
   
     if authorized and @home.update_attributes(params[:home])
-      flash[:notice] = 'Home was successfully updated.'
+      flash[:notice] = 'Photo was successfully uploaded.'
       respond_with(@home, :location => home_url(@home))
     else
       respond_with(@home, :location => edit_home_url(@home))

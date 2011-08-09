@@ -156,7 +156,8 @@ class Blog < ActiveRecord::Base
   end
   
   def webify_http
-    webcontent = content.gsub(/(https?:\/\/[^ ]*?)([.,;:]?)(( |\Z))/, '<a href="\1" class="ublog-link" target="_top">\1</a>\2\3')
+    webcontent = CGI.escapeHTML(content) # start off with clean content
+    webcontent.gsub!(/(https?:\/\/[^ ]*?)([.,;:]?)(( |\Z))/, '<a href="\1" class="ublog-link" target="_top">\1</a>\2\3')
     # Shorten the displayed URL if long
     runs = webcontent.split("</a>")
     runs.each do |run|
@@ -222,7 +223,7 @@ class Blog < ActiveRecord::Base
       # remove @reply from replies
       line = line.sub(/\A(@.*? )/, "")
     end
-    line
+    line # already escaped
   end
 
   def previous
