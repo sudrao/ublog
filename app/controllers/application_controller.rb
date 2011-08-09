@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   require 'auth_module'
   helper :all # include all helpers, all the time
-  helper_method :asset_type_path, :my_base_url
+  helper_method :my_base_url
   cache_sweeper :show_sweeper, :only => [:create, :update, :destroy]
   cache_sweeper :time_sweeper, :only => [:create]
   has_mobile_fu

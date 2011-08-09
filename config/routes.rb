@@ -30,8 +30,10 @@ Ub3::Application.routes.draw do
 
   resource :search
 
-# Low priority routes
+# Conventional routes
   match 'log' => 'log#show'
+  match 'blogs/new' => 'blogs#new'
+# Low priority routes
   # match on userid
   match ':vanity' => 'vanity#show'
   match '' => 'homes#index'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110808175207) do
+ActiveRecord::Schema.define(:version => 20110809215729) do
 
   create_table "assets", :force => true do |t|
     t.string   "filename"
@@ -80,7 +80,6 @@ ActiveRecord::Schema.define(:version => 20110808175207) do
     t.integer  "is_group"
     t.integer  "notify_calendar"
     t.datetime "last_notified"
-    t.integer  "asset_id"
     t.integer  "is_private"
     t.string   "proxy"
     t.string   "email_list"

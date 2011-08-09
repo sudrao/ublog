@@ -1,4 +1,4 @@
-require 'lib/yammer_api'
+require ::Rails.root.join('lib', 'yammer_api.rb')
 
 class YammersController < ApplicationController
   before_filter :set_visitor_home

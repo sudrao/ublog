@@ -1,8 +1,8 @@
   <% if origin = blog.origin %>
   <tr>
-    <% asset = origin.asset %>
+    <% photo = origin.photo %>
     <td>
-      <%= link_to(image_tag(asset_type_path(asset, true), :class => "no-border"), home_path(origin)) %>
+      <%= link_to(image_tag(photo.url(:thumb), :class => "no-border"), home_path(origin)) %>
     </td>
     <td>
       <%= link_to h(origin.ublog_name), home_path(origin) %> <%= ' ' + blog.webify + ' ---' %>
