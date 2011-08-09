@@ -1,6 +1,6 @@
 <% if (!@blocked && (@home.ublog_name != 'news')) || @admin %>
-<% form_for(@new_blog, :html => { :multipart => true }) do |f| %>
-  <%= f.error_messages %>
+<%= form_for(@new_blog, :html => { :multipart => true }) do |f| %>
+  <%= render "shared/error_messages", :target => @new_blog %>
 
   <p>
     <% if @owned_account -%>

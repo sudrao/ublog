@@ -3,9 +3,9 @@
 <h3>For best results please crop your photo to a square shape before uploading.</h3>
 <h3>Make sure the image file is less than 5 megabytes.</h3>
 
-<%= error_messages_for @home %>
+<%= render "shared/error_messages", :target => @home %>
 
-<% form_for(@home, :html => { :multipart => true }) do |f| %>
+<%= form_for(@home, :html => { :multipart => true }) do |f| %>
   <p>
     <label for="photo">Select an image file:</label>
     <%= f.file_field :photo %>

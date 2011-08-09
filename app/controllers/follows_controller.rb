@@ -1,5 +1,4 @@
 class FollowsController < ApplicationController
-  before_filter :authenticate
   before_filter :set_visitor_home
   
   def show

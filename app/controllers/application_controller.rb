@@ -8,8 +8,10 @@ class ApplicationController < ActionController::Base
   cache_sweeper :show_sweeper, :only => [:create, :update, :destroy]
   cache_sweeper :time_sweeper, :only => [:create]
   has_mobile_fu
+  before_filter :authenticate
+
   PAGE_SIZE = 25
-  TEST_USER = '#{TESTUSER}'
+  TEST_USER = "#{TESTUSER}"
     
   protect_from_forgery
     
@@ -18,33 +20,6 @@ class ApplicationController < ActionController::Base
   def my_base_url
     request.protocol + request.host + 
       (request.port == 80 ? "" : ":" + request.port.to_s)
-  end
-  
-  # Generate proper url for an image or thumbnail
-  # {:only_path => false} should be sent in for absolute url
-  def asset_type_path(asset, thumb=nil, opts = {})
-    type = Mime::Type.lookup(asset.content_type) if asset
-    thumb_url = thumb ? '/thumbs/1' : ''
-    prefix = ""
-    # Generate absolute url prefix if asked for
-    prefix = my_base_url if (opts[:only_path] == false)
-    if asset
-      case type
-      when Mime::JPG   
-        url = thumb_url + '/assets/' + asset.id.to_s + '.jpg'
-      when Mime::GIF
-        url = thumb_url + '/assets/' + asset.id.to_s + '.gif'
-      when Mime::PNG
-        url = thumb_url + '/assets/' + asset.id.to_s + '.png'
-      else
-        # This is for an unknown type. Browser will show a broken image.
-        url = thumb_url + '/assets/' + asset.id.to_s + '.jnk'
-      end
-    else
-      thumb_str = thumb ? '_thumb' : ''
-      url = "/images/ublog_default#{thumb_str}.png"
-    end
-    prefix + url
   end
   
   # Called from show_sweeper and displays_controller
@@ -64,10 +39,7 @@ class ApplicationController < ActionController::Base
     error = 'Invalid page' unless error || (@page > 0)
     if error
       flash[:error] = error
-      respond_to do |format|
-        format.html { redirect_to homes_url }
-        format.xml { render :xml => Home.new.errors, :status => :unprocessable_entity }
-      end
+      respond_with(nil, :location => homes_url)
       nil
     else
       # Provide links to feedback and news accounts

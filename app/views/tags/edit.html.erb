@@ -1,7 +1,7 @@
 <h1>Editing tag</h1>
 
 <% form_for(@tag) do |f| %>
-  <%= f.error_messages %>
+  <%= render "shared/error_messages", :target => @tag %>
 
   <p>
     <%= f.label :name %><br />

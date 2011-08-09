@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-
+  skip_before_filter :authenticate
+  
   # GET /session
   def show
     first_url = session[:first_url]

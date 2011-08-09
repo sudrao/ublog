@@ -1,7 +1,6 @@
 require 'lib/yammer_api'
 
 class YammersController < ApplicationController
-  before_filter :authenticate
   before_filter :set_visitor_home
   
   # GET /yammer

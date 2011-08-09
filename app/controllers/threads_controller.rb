@@ -1,5 +1,4 @@
 class ThreadsController < ApplicationController
-  before_filter :authenticate
   
   # GET /homes/1/threads/1
   def show

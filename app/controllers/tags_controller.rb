@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_filter :authenticate, :except => [:index]
+  skip_before_filter :only => [:index]
   before_filter :set_visitor_home, :except => [:index]
   before_filter :verify_owner, :only => [:destroy, :edit]
   caches_page :index

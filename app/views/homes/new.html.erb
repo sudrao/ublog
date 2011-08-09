@@ -3,8 +3,8 @@
 Use this form to create a new ublog account for your group. Note that you become the owner of the new account created. Anyone in the Company can follow this account.
 </p>
 
-<% form_for(@home) do |f| %>
-  <%= f.error_messages %>
+<%= form_for(@home) do |f| %>
+  <%= render "shared/error_messages", :target => @home %>
 
   <p>
     <%= f.select :is_private, @privacy %>

@@ -1,7 +1,6 @@
 require 'lib/twitter_api'
 
 class TwittersController < ApplicationController
-  before_filter :authenticate
   before_filter :set_visitor_home
   
   # GET /twitter

@@ -1,7 +1,7 @@
 <div id="right-bar">
 <div id="owner-details">
   <%= @home.name %>
-  <%= link_to image_tag(@home.photo.url(:small)), home_edit_path(@home) if @owned_account %>
+  <%= link_to image_tag(@home.photo.url(:small)), edit_home_path(@home) if @owned_account %>
   <%= image_tag(@home.photo.url(:small)) unless (@owned_account || (@home.is_group == 1)) %>
 </div>
 <div id="friends">
@@ -70,14 +70,14 @@ Followed by: <%= link_to(@follower_homes.length.to_s, home_follow_path(@home)) %
 </div>
 
 <div class="center">
-<% form_tag(home_toggle_mobile_path(@home)) do %>
+<%= form_tag(home_toggle_mobile_path(@home)) do %>
    <%= hidden_field_tag :mobile, in_mobile_view? ? "0" : "1" %>
    <%= hidden_field_tag :narrow, "0" %>
    <%= submit_tag "Set Mobile View" unless in_mobile_view? %>
    <%= submit_tag "Set Normal View" if in_mobile_view? %>
 <% end %>
 <% unless in_mobile_view? %>
-<% form_tag(home_toggle_mobile_path(@home)) do %>
+<%= form_tag(home_toggle_mobile_path(@home)) do %>
    <%= hidden_field_tag :mobile, "0" %>
    <%= hidden_field_tag :narrow, "1" %>
    <%= submit_tag "Set Narrow View"  %>

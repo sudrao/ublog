@@ -1,5 +1,4 @@
 class GroupsController < ApplicationController
-  before_filter :authenticate
   before_filter :set_visitor_home
   
   # Show groups. Allow creating groups

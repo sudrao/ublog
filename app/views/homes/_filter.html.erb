@@ -10,7 +10,7 @@ by tag:&nbsp <span id="by-tag"><%= @tag %></span>
 </div>
 
 <div id="filter-1">
-<% form_tag(home_display_path(@home)) do -%>
+<%= form_tag(home_display_path(@home)) do -%>
 <%= hidden_field_tag(:page, 1) %>
 <%= hidden_field_tag(:all, 0) %>
 <%= submit_tag('Mine', :class => @mine ? 'page-button red-border' : 'page-button', :disabled => @mine) %>
@@ -18,7 +18,7 @@ by tag:&nbsp <span id="by-tag"><%= @tag %></span>
 </div>
 
 <div id="filter-2">
-<% form_tag(home_display_path(@home)) do -%>
+<%= form_tag(home_display_path(@home)) do -%>
 <%= hidden_field_tag(:page, 1) %>
 <%= hidden_field_tag(:all, 1) %>
 <%= submit_tag('All', :class => @all ? 'page-button red-border' : 'page-button', :disabled => @all) %>

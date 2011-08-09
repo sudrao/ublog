@@ -1,6 +1,6 @@
 <% if @friend %>
-<% form_for(@friend) do |f| %>
-  <%= f.error_messages %>
+<%= form_for(@friend) do |f| %>
+  <%= render "shared/error_messages", :target => @friend %>
 
   <p>
     <%= f.hidden_field :friend_id %>
