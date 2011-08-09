@@ -4,7 +4,11 @@ class Home < ActiveRecord::Base
   validates :owner, :name, :presence => true
   validates :email_list, :format => {:with => /\A[^ $~!@#%^&*+=(){};':",?<>.]*\Z/, :message => " cannot have @ or blanks or punctuation. Remove them. Check for trailing blanks."}
  
-  has_one :asset # photo of owner
+  has_attached_file :photo, :styles => {:thumb => "50x50>" , :small => "200x200>" },
+                    :url => "assets/homes/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/homes/:id/:style/:basename.:extension"
+  validates_attachment_size :photo, :less_than => 5.megabytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
   
   has_many :blogs # as "owner" of those blogs
   has_many :responses, :class_name => "Blog", :foreign_key => "to_id" # blogs "to" this owner

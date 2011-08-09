@@ -1,0 +1,24 @@
+<div id="top-bar">
+<p>
+<%= link_to('News', home_path(@news)) if @news %>&nbsp&nbsp
+<%= link_to('Feedback', home_path(@feedback)) if @feedback %>&nbsp&nbsp
+<%= link_to 'Groups', groups_path %>&nbsp&nbsp
+<%= link_to 'Tags', tags_path %>&nbsp&nbsp
+<%= link_to 'Subs', home_follow_path(@home) %>
+</p>
+</div>
+
+<div>
+<table>
+  <tr>
+    <td colspan="3" class="uline"></td>
+  </tr>
+<% for blog in @blogs %>
+<%= render :partial => "homes/blog.html.erb", :locals => { :blog => blog, 
+  :home_id => @home.id, :owned_account => @owned_account, 
+  :author_id => @new_blog.home_id, :mobile => true, :reply => true } %>
+<% end %>
+</table>
+</div>
+
+<%= link_to "Back", @home %>

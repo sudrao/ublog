@@ -1,0 +1,20 @@
+<div id="page-turner">
+<div id="button-right">
+<% if @paginate -%>
+<% form_tag(all_path) do -%>
+<%= hidden_field_tag(:page, @page+1) %>
+<%= submit_tag('Older >>', :class => 'page-button fixed-padding') %>
+<% end -%>
+<% end -%>
+</div>
+<% if @page > 1 -%>
+<div id="button-left" class="page-button fixed-width fixed-padding" >
+  <%= link_to('|<< Page 1', all_path) %>
+</div>
+<% end -%>
+<% if (@paginate && (@page <= 1)) -%>
+<div id="button-left" class="page-button fixed-width fixed-padding grey" >
+  |<< Page 1
+</div>
+<% end -%>
+</div>

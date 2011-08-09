@@ -1,0 +1,34 @@
+<p>This is an automatic email from ublog.#{DOMAIN}.com</p>
+
+<p>
+<%= "#{@blogs.length} new messages have been posted to the " %>
+<%= '<a href="http://ublog.#{DOMAIN}.com/homes/' + @home.id.to_s + '">' + @home.ublog_name + "</a>" %>
+<%= " group on ublog." %>
+</p>
+<p>
+<%= "Please go to " + 
+ '<a href="http://ublog.#{DOMAIN}.com/homes/' + @home.id.to_s + '">' + 
+ @home.ublog_name + "</a>" + " to view them. Snippets shown below." %>
+ <br />
+<div>
+<table>
+<% for blog in @blogs do %>
+  <% if blog.origin %>
+  <tr>
+    <td>
+      <%= "<b>#{blog.origin.ublog_name}</b> #{blog.content[0..49]}... " %>
+    </td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+</div>
+ <br />
+ <%=  '<a href="http://ublog.#{DOMAIN}.com/">http://ublog.#{DOMAIN}.com</a>' + " is the Company internal microblog." %><br />
+ <%=  'Read about ublog in the <a href="http://#{DOMAIN}pedia.#{DOMAIN}.com/display/cpda/ublog">ublog user guide.</a>' %>
+</p>
+<p>
+<%= "To unsubscribe please contact the group owner <b>#{@home.owner}.#{DOMAIN}.com</b> " %>
+<%= "or remove yourself from the mailer list <b>#{@home.email_list}.#{DOMAIN}.com</b>." %>
+</p>
+

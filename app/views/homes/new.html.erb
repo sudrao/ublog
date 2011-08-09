@@ -1,0 +1,37 @@
+<h1 class="center" >New ublog Account</h1>
+<p id="description">
+Use this form to create a new ublog account for your group. Note that you become the owner of the new account created. Anyone in the Company can follow this account.
+</p>
+
+<% form_for(@home) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.select :is_private, @privacy %>
+  </p>
+  <p>
+    <%= f.label 'Unique name: no blanks or punctuation' %><br />
+    <%= f.text_field :ublog_name %>
+  </p>
+
+  <p>
+    <%= f.label 'Purpose or tag line:' %><br />
+    <%= f.text_field :name, :maxlength => 50 %>
+  </p>
+
+  <p>
+    <%= f.label :owner %><br />
+    <% if @admin %>
+      <%= f.text_field :owner %>
+    <% else %>
+      <%= f.text_field :owner, :readonly => true %>
+    <% end %>
+  </p>
+
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<div>
+<br /><%= link_to('Back to my account', homes_path) %>
+</div>

@@ -1,0 +1,12 @@
+  <h2><%= "Tag: " + h(@tag.name) %></h2>
+
+<% form_for(@tagsub) do |f| %>
+    <%= f.hidden_field :tag_id %>
+    <%= f.hidden_field :home_id %>
+    <%= f.hidden_field :email_notify %>
+
+  <p>
+    <%= f.submit "Follow this tag", :disabled => @already_following %>
+    <%= link_to("Stop following", tagsub_path(@tagsub), :method => :delete) if @already_following %>
+  </p>
+<% end %>

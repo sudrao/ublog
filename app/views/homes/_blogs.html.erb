@@ -1,0 +1,19 @@
+<% blog_partial = blog_partial; use_partial = blog_partial || "homes/blog_table.html.erb" -%>
+<% periodic_url = periodic_url; use_url = periodic_url || (home_path(@home) + ".js") -%>
+<% if @page == 1 %>
+<%= periodically_call_remote :url => use_url,
+       :update => "blog_table", :before => "Element.show('progress_indicator')",
+       :frequency => 60,
+       :complete => "Element.hide('progress_indicator')",
+       :method => :get
+        %>
+<div id="progress_indicator" style="display:none">
+Updating...
+</div> 
+<div id="blog_table">
+  <%= render :partial => use_partial, :locals => { :reply => reply } %>
+</div>
+
+<% else %>
+<%= render :partial => use_partial, :locals => { :reply => reply } %>
+<% end %>
