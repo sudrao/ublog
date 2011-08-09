@@ -124,23 +124,17 @@ class HomesController < ApplicationController
   # PUT /homes/1.xml
   # Only used to update the photo
   def update
-  @home = Home.find(params[:id])
-  authorized = @admin or (@home.owner == @user)
-  @home.photo = params[:photo]
-
-  respond_to do |format|
+    @home = Home.find(params[:id])
+    authorized = @admin || (@home.owner == @user)
+    flash[:error] = "Not authorized" unless authorized
+  
     if authorized and @home.update_attributes(params[:home])
       flash[:notice] = 'Home was successfully updated.'
-      format.html { redirect_to home_url(@home) }
-      format.xml  { head :ok }
+      respond_with(@home, :location => home_url(@home))
     else
-      format.html { render :action => "edit" }
-      format.xml  { render :xml => @home.errors, :status => :unprocessable_entity }
+      respond_with(@home, :location => edit_home_url(@home))
     end
   end
-end
-
-
 
   # DELETE /homes/1
 
