@@ -1,14 +1,4 @@
 rvm: 1.9.2
-
 env: RAILS_ENV=test DB=mysql
-
-mysql:
-  adapter: mysql2
-  encoding: utf8
-  database: ublog_test
-  username:
-  socket: /var/run/mysqld/mysqld.sock
-
-before_script: "bundle exec rake db:schema:load"
-
+before_script: "bundle exec cp spec/.travis-mysql.yml config/database.yml; rake db:schema:load"
 script: "bundle exec rake spec"
