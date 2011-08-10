@@ -1,4 +1,4 @@
 rvm: 1.9.2
-before_script: "bundle exec rake db:migrate"
+before_script: "bundle exec rake db:migrate --trace"
 script: "bundle exec rake spec --trace"
 env: RAILS_ENV=test
