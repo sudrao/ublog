@@ -1,13 +1,3 @@
 rvm: 1.9.2
-script: "DB=mysql bundle exec rake spec"
-env: DB=mysql
-before_script:
-  - "mysql -e 'create database ublog_test;' >/dev/null"
-mysql:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: ublog_test
-  pool: 5
-  username:
-  socket: /tmp/mysql.sock
+script: "bundle exec rake spec"
+env: RAILS_ENV=test
