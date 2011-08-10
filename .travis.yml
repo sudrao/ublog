@@ -1,4 +1,4 @@
 rvm: 1.9.2
-env: RAILS_ENV=test DB=mysql
-before_script: "cp spec/.travis-mysql.yml config/database.yml; mysql -e 'create database ublog_test;' >/dev/null"
-script: "bundle exec rake spec"
+env: RAILS_ENV=test
+script: spec/travis.rb
+
