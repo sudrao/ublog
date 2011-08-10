@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-path = File.absolute_path(__FILE__)
+path = File.expand_path(File.dirname(__FILE__))
 
 if ENV['TRAVIS']
   system "cp #{path}/.travis.yml config/database.yml"
