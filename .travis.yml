@@ -1,4 +1,4 @@
 rvm: 1.9.2
 env: RAILS_ENV=test DB=mysql
-before_script: "bundle exec cp spec/.travis-mysql.yml config/database.yml; rake db:schema:load"
+before_script: "cp spec/.travis-mysql.yml config/database.yml; bundle exec rake db:schema:load"
 script: "bundle exec rake spec"
