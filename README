@@ -15,14 +15,6 @@ All data in ublog is stored in a server inside the Company firewall
 and is not accessible from outside, except via VPN. This makes it possible
 to post confidential information on ublog.
 
-Overview
-========
-ublog was created specifically to address the information security concerns 
-that corporations have when using cloud based services. 
-All data in ublog is stored in a server inside the Company firewall
-and is not accessible from outside, except via VPN. This makes it possible
-to post confidential information on ublog.
-
 ublog can be used as a simple communication application to send 140 character
 messages and hyperlinks. Other features include search, threads, attachments, 
 groups, group nudge, hash tags, and a client replacement called Narrow view mode 
