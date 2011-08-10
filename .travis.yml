@@ -1,4 +1,13 @@
 rvm: 1.9.2
-before_script: "bundle exec rake db:migrate --trace"
-script: "bundle exec rake spec --trace"
-env: RAILS_ENV=test
+before_script: "bundle exec rake db:migrate"
+script: "bundle exec rake spec"
+env:
+	- RAILS_ENV=test
+	- DB=mysql
+mysql:
+  adapter: mysql2
+  encoding: utf8
+  database: ublog_test
+  username:
+
+
