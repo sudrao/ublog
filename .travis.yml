@@ -1,6 +1,8 @@
 rvm: 1.9.2
 script: "bundle exec rake spec"
 env: DB=mysql
+before_script:
+  - "mysql -e 'create database ublog_test;' >/dev/null"
 mysql:
   adapter: mysql2
   encoding: utf8
