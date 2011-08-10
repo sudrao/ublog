@@ -7,7 +7,8 @@ mysql:
   encoding: utf8
   database: ublog_test
   username:
+  socket: /var/run/mysqld/mysqld.sock
 
-before_script: "mysql show variables"
+before_script: "bundle exec rake db:schema:load"
 
 script: "bundle exec rake spec"
