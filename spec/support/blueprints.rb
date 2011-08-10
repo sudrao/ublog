@@ -11,7 +11,6 @@ require 'machinist/active_record'
 Home.blueprint do
       ublog_name { "johndoe-#{sn}" }
       name       { "John Doe" }
-      asset_id   { sn.to_i }
       owner      { "someone" }
 end
 

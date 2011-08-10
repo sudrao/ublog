@@ -18,6 +18,6 @@ class Upload < ActiveRecord::Base
   belongs_to :blog
   
   def is_image
-    content_type.index 'image'
+    attachment.content_type.index 'image'
   end
 end

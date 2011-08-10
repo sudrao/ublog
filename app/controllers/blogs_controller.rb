@@ -81,15 +81,15 @@ class BlogsController < ApplicationController
           end
         end
         # Create attachment if any
-        unless (params[:uploaded_data].blank?)
-          upload = Upload.new(:uploaded_data => params[:uploaded_data])
+        unless (params[:attachment].blank?)
+          upload = Upload.new(:attachment => params[:attachment])
           upload.blog = @blog
           begin
             if upload.save!
-              logger.debug "Saved attachment #{upload.filename}"
+              logger.debug "Saved attachment #{upload.attachment.original_filename}"
             end
           rescue
-            flash[:error] = upload.content_type + ":" + upload.errors.to_s
+            flash[:error] = upload.attachment.content_type + ":" + upload.errors.to_s
           end
         end
       end      

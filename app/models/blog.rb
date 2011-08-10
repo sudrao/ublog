@@ -5,8 +5,8 @@ class Blog < ActiveRecord::Base
   belongs_to :to, :class_name => "Home", :foreign_key => "to_id"
   has_many :taglinks
   has_many :tags, :through => :taglinks
-  has_many :main_attachments, :class_name => "Upload", :foreign_key => "blog_id", 
-    :conditions => "thumbnail IS NULL"
+  has_many :uploads
+
   
   acts_as_solr :fields => [:content], :auto_add => false, :auto_commit => false
   

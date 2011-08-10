@@ -15,9 +15,11 @@
       <% if blog.thread and @nothread.nil? %>
         <%= link_to image_tag("/images/ub_thread.png", :class => "no-border", :title => "Thread"), home_thread_path(@home, blog.thread) %>
       <% end %>
-      <% if attach = blog.attachment %>
-        <%= link_to image_tag(attach.public_filename(:thumb)), attach.public_filename if attach.is_image %>
-        <%= link_to "Attached", attach.public_filename unless attach.is_image %>
+      <% uploads = blog.uploads %>
+      <% unless uploads.empty? %>
+        <% attachment = uploads[0].attachment %>
+        <%= link_to image_tag(attachment.url(:thumb)), attachment.url if uploads[0].is_image %>
+        <%= link_to "Attached", attachment.url unless uploads[0].is_image %>
       <% end %>
     </td>
     <td>

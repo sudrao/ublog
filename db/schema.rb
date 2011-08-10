@@ -10,21 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110809215729) do
-
-  create_table "assets", :force => true do |t|
-    t.string   "filename"
-    t.string   "content_type"
-    t.integer  "size"
-    t.integer  "width"
-    t.integer  "height"
-    t.integer  "parent_id"
-    t.string   "thumbnail"
-    t.integer  "db_file_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "home_id"
-  end
+ActiveRecord::Schema.define(:version => 20110810153654) do
 
   create_table "blogs", :force => true do |t|
     t.string   "content"
@@ -49,10 +35,6 @@ ActiveRecord::Schema.define(:version => 20110809215729) do
     t.integer  "yammer_last_id", :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "db_files", :force => true do |t|
-    t.binary "data", :limit => 2147483647
   end
 
   create_table "followers", :force => true do |t|
@@ -130,16 +112,13 @@ ActiveRecord::Schema.define(:version => 20110809215729) do
   end
 
   create_table "uploads", :force => true do |t|
-    t.string   "filename"
-    t.string   "content_type"
-    t.integer  "size"
-    t.integer  "width"
-    t.integer  "height"
-    t.integer  "parent_id"
-    t.string   "thumbnail"
     t.integer  "blog_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
   end
 
 end
