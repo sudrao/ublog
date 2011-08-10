@@ -1,8 +1,6 @@
 rvm: 1.9.2
 
-env:
-  - RAILS_ENV=test
-  - DB=mysql
+env: RAILS_ENV=test DB=mysql
 
 mysql:
   adapter: mysql2
@@ -10,6 +8,6 @@ mysql:
   database: ublog_test
   username:
 
-before_script: "bundle exec rake db:migrate"
+before_script: "mysql show variables"
 
 script: "bundle exec rake spec"
