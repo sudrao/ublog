@@ -20,12 +20,7 @@ class DisplaysController < HomesController
         opts[:all] = session[:all]
         load_blogs(opts)
         # Get photo
-        @default_asset = Asset.find_by_filename("ublog_default.png")
-        if (@home.asset)
-          @asset = @home.asset
-        else
-          @asset = @default_asset
-        end
+        @photo = @home.photo
       else
         return # error already shown
       end

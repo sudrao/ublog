@@ -21,4 +21,8 @@ module ApplicationHelper
       created_time.to_s[/^.*?[0-9]+/]
     end
   end
+  
+  def mydomain
+    return ::DOMAIN # provide constant as a view method
+  end
 end

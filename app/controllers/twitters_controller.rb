@@ -1,7 +1,6 @@
-require 'lib/twitter_api'
+require ::Rails.root.join('lib', 'twitter_api.rb')
 
 class TwittersController < ApplicationController
-  before_filter :authenticate
   before_filter :set_visitor_home
   
   # GET /twitter

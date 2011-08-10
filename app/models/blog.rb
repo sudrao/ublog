@@ -1,12 +1,12 @@
 class Blog < ActiveRecord::Base
-  validates_presence_of :content
-  validates_numericality_of :home_id, :on => :create, :greater_than => 0
+  validates :content, :home_id, :presence => true
+  validates :home_id, :numericality => {:on => :create, :greater_than => 0}
   belongs_to :origin, :class_name => "Home", :foreign_key => "home_id"
   belongs_to :to, :class_name => "Home", :foreign_key => "to_id"
   has_many :taglinks
   has_many :tags, :through => :taglinks
-  has_many :main_attachments, :class_name => "Upload", :foreign_key => "blog_id", 
-    :conditions => "thumbnail IS NULL"
+  has_many :uploads
+
   
   acts_as_solr :fields => [:content], :auto_add => false, :auto_commit => false
   
@@ -15,7 +15,7 @@ class Blog < ActiveRecord::Base
     main_attachments ? main_attachments[0] : nil
   end
   
-  # Return all blogs except private ones. Unless the user has not subscribed 
+  # Return all blogs except private ones. Unless the user subscribed 
   # for those groups. Limit and order results
   # LEFT OUTER JOIN will return at least one copy of each blog
   # i.e. from the first mentioned table. This corresponds to "all blogs"
@@ -25,143 +25,99 @@ class Blog < ActiveRecord::Base
   # uniqueness of blogs.
   def self.all_blogs(home, page_size=25, offset=0)
     home_id = home.id
-    blogs_subset = "(SELECT * FROM blogs ORDER BY created_at DESC LIMIT 100)"
+    b = Blog.arel_table
+    f = Friend.arel_table
+    
+    not_private = b[:is_private].eq(false)
+    own_blog = b[:home_id].eq(home_id)
+    subscribed = f[:home_id].eq(home_id).and(f[:is_approved].eq(true)).and(b[:is_private].eq(true))
+    
+    sql = joins('LEFT OUTER JOIN friends ON friends.friend_id = blogs.to_id').
+      where(not_private.or(own_blog).or(subscribed)
+        ).group(:id).order('blogs.created_at DESC').limit(page_size).offset(offset).to_sql
+        
+    find_by_sql(sql) # need this to work around group by generating a 2D array
+  end
 
-    if (offset == 0)
-      # First try with last 10000 blogs to save time
-      result = find_every_by_sql(blogs_subset, home_id, page_size, offset)
-    end
-    if (offset > 0) or (result.length < page_size)
-      # With full database
-      result = find_every_by_sql("blogs", home_id, page_size, offset)      
-    end
-    result
+  def self.join_all(page_size=25, offset=0)  
+    # We start with all blogs and outer join with friends, taglinks and tagsubs
+    # to be able to include subscriptions.
+    joins('LEFT OUTER JOIN friends ON (friends.friend_id = blogs.to_id) OR (friends.friend_id = blogs.home_id)').
+      joins('LEFT OUTER JOIN taglinks ON taglinks.blog_id = blogs.id').
+      joins('LEFT OUTER JOIN tagsubs ON tagsubs.tag_id = taglinks.tag_id').
+      group(:id).order('blogs.created_at DESC').limit(page_size).offset(offset)
   end
-  
-  def self.find_every_by_sql(blogs_set, home_id, page_size, offset)
-    find_by_sql(
-   "SELECT b.* FROM #{blogs_set} AS b
-      -- return all fields from blogs
-    LEFT OUTER JOIN friends AS f
-      -- join with friends just to check conditions
-    ON f.friend_id = b.to_id
-      -- this blog is addressed to a friend
-    WHERE b.is_private IS NULL OR b.is_private <> 1 OR
-      -- and blog is not private
-    b.home_id = #{home_id} OR 
-      -- or blog is from this user
-    (f.home_id = #{home_id} AND
-    f.is_approved = 1 AND b.is_private = 1)
-      -- or blog is private but user has access to the private group
-    GROUP BY b.id
-    ORDER BY b.created_at DESC
-    LIMIT #{offset}, #{page_size};"
-    )
-  end
-  # search for blogs to display for one user
+        
+
+  # search for blogs to display for one user_id.
+  # user_id is the current user's id and home is the page being
+  # visited (could be user's home). Owned means the user is on
+  # the home page or visiting a page (like a group page) that is
+  # owned by him/her. fake_auth means this is for a public feed like
+  # rss and private blogs should not be returned.
   def self.mine (user_id, owned, fake_auth, home, page_size=25, offset=0)
-    home_idval = home.id
-    own_select = owned ? "TRUE" : "FALSE" # use in SQL
-    private_select = fake_auth ? "FALSE" : "TRUE"
-    blogs_subset = "(SELECT * FROM blogs ORDER BY created_at DESC LIMIT 10000)"
+    home_id = home.id
+    b = Blog.arel_table
+    f = Friend.arel_table
+    ts = Tagsub.arel_table
+    
+    not_private = b[:is_private].eq(false)
+    on_page = b[:home_id].eq(home_id).or(b[:to_id].eq(home_id))
+    p_following = f[:home_id].eq(home_id).and(b[:home_id].eq(f[:friend_id])).and(not_private) # person or group, public blogs
+    following = f[:home_id].eq(home_id).and(b[:to_id].eq(f[:friend_id])) # group or reply
+    subscribed_tag = ts[:home_id].eq(home_id).and(not_private)
+    # when on another (not home) page, check if I am following the private group, too
+    # or blog is public or I am the blog writer
+    me_following = f[:home_id].eq(user_id).and(f[:is_approved].eq(true)).and(b[:is_private].eq(true))
+    own_blog = b[:home_id].eq(user_id)
 
-    if (offset == 0)
-      # First try with last 10000 blogs to save time
-      result = find_mine_by_sql(blogs_subset, home_idval, own_select, private_select,
-                 user_id, page_size, offset)
+    j = self.join_all
+    # filter the blogs in joined tables case by case
+    if (owned and !fake_auth)
+      # We are on our home page or another page that we own, so we can use
+      # home_id as our own id
+      sql = j.where(on_page.or(following).or(p_following).or(subscribed_tag)).to_sql
+    elsif (!fake_auth)
+      # We are visting someone's page or a group page
+      sql = j.where(on_page.and(not_private).or(following.and(not_private)).
+                or(p_following).
+                or(subscribed_tag.and(not_private)).
+                or(on_page.and(own_blog)).
+                or(following.and(me_following)).
+                or(on_page.and(me_following)).
+                or(subscribed_tag.and(own_blog)).
+                or(subscribed_tag.and(me_following)).
+                or(following.and(own_blog))).to_sql
+    else
+      sql = j.where(not_private).where(on_page.or(following).or(subscribed_tag)).to_sql 
     end
-    if (offset > 0) or (result.length < page_size)
-      # With full database
-      result = find_mine_by_sql("blogs", home_idval, own_select, private_select,
-                 user_id, page_size, offset)      
-    end
-    result
+    logger.debug 'MINESQL: ' + sql        
+    find_by_sql(sql) # need this to work around group by generating a 2D array
   end
   
-  def self.find_mine_by_sql(blogs_set, home_idval, own_select, private_select, user_id,
-                              page_size, offset)
-    find_by_sql(
-    " -- Own blogs and replies to this account
-    SELECT b.* FROM #{blogs_set} AS b
-    WHERE (b.home_id = #{home_idval} OR b.to_id = #{home_idval}) AND
-      ((#{own_select} AND #{private_select}) OR (b.is_private IS NULL OR b.is_private <> 1))
-    
-    UNION
-     -- Friends' originated blogs (non-private)
-    SELECT b.* FROM friends as f
-    INNER JOIN #{blogs_set} as b
-    ON f.friend_id = b.home_id 
-    WHERE f.home_id = #{home_idval} AND (b.is_private IS NULL OR b.is_private <> 1)
-    
-    UNION
-      -- Replies to subscribed accounts with private validation
-    SELECT b.* FROM #{blogs_set} AS b
-    INNER JOIN friends AS f
-    ON f.friend_id = b.to_id
-    WHERE f.home_id = #{user_id} AND (#{own_select} OR b.to_id = #{home_idval} OR b.home_id = #{home_idval})
-    AND ((#{private_select} AND f.is_approved IS NOT NULL AND f.is_approved = 1)  
-        OR b.is_private IS NULL OR b.is_private <> 1)
-        
-    UNION
-      -- blogs with subscribed tags (non-private)
-    SELECT b.* FROM #{blogs_set} AS b
-    INNER JOIN taglinks AS tl
-    ON b.id = tl.blog_id
-    INNER JOIN tagsubs AS ts
-    ON tl.tag_id = ts.tag_id
-    WHERE ts.home_id = #{home_idval} AND (b.is_private IS NULL OR b.is_private <> 1)
-    GROUP BY id
-    ORDER BY created_at DESC
-    LIMIT #{offset}, #{page_size}")
-
-  end
-
   # Same deal as "mine" but for email enabled friends and tags
+  # Here we interested in blogs that would show up on the user's home page
   def self.my_email (user_id, start_time, end_time, page_size=25, offset=0)
-    blogs_subset = "(SELECT * FROM blogs ORDER BY created_at DESC LIMIT 10000)"
-    # Assumes much lower than 10,000 blogs per day
-    find_my_email_by_sql(blogs_subset, user_id, start_time, end_time, page_size, offset)
+    b = Blog.arel_table
+    f = Friend.arel_table
+    ts = Tagsub.arel_table
+    
+    not_private = b[:is_private].eq(false)
+    to_me = b[:to_id].eq(user_id)
+    p_following = f[:home_id].eq(user_id).and(b[:home_id].eq(f[:friend_id])).and(not_private) # person or group, public blogs
+    following = f[:home_id].eq(user_id).and(b[:to_id].eq(f[:friend_id])) # group or reply
+    approved = f[:is_approved].eq(true)
+    subscribed_tag = ts[:home_id].eq(user_id).and(ts[:email_notify].eq(true))
+    not_by_me = b[:home_id].not_eq(user_id) # exclude my own blogs
+
+    j = self.join_all
+    # filter the blogs in joined tables
+    sql = j.where(:created_at => start_time..end_time).where(not_by_me).
+            where(following.and(approved).or(following.and(not_private)).or(p_following).or(subscribed_tag).or(to_me)).to_sql
+    logger.debug 'EMAILSQL: ' + sql        
+    find_by_sql(sql) # need this to work around group by generating a 2D array
   end
   
-  def self.find_my_email_by_sql(blogs_set, user_id, start_time, end_time, page_size, offset)
-    find_by_sql(
-    " -- replies to my account
-    SELECT b.* FROM #{blogs_set} AS b
-    WHERE b.to_id = #{user_id} AND b.created_at > #{start_time} AND b.created_at <= #{end_time} 
-    
-    UNION
-     -- Friends' originated blogs (non-private)
-    SELECT b.* FROM friends as f
-    INNER JOIN #{blogs_set} as b
-    ON f.friend_id = b.home_id 
-    WHERE f.home_id = #{user_id} AND (b.is_private IS NULL OR b.is_private <> 1) AND
-      (f.email_notify > 0) AND b.created_at > #{start_time} AND b.created_at <= #{end_time}
-    
-    UNION
-      -- Replies to subscribed accounts with private validation
-    SELECT b.* FROM #{blogs_set} AS b
-    INNER JOIN friends AS f
-    ON f.friend_id = b.to_id
-    WHERE f.home_id = #{user_id} AND f.email_notify > 0
-    AND b.created_at > #{start_time} AND b.created_at <= #{end_time}
-    AND ((f.is_approved IS NOT NULL AND f.is_approved = 1)  
-        OR b.is_private IS NULL OR b.is_private <> 1)
-        
-    UNION
-      -- blogs with subscribed tags (non-private)
-    SELECT b.* FROM #{blogs_set} AS b
-    INNER JOIN taglinks AS tl
-    ON b.id = tl.blog_id
-    INNER JOIN tagsubs AS ts
-    ON tl.tag_id = ts.tag_id
-    WHERE ts.home_id = #{user_id} AND (b.is_private IS NULL OR b.is_private <> 1)
-    AND ts.email_notify > 0 AND b.created_at > #{start_time} AND b.created_at <= #{end_time}
-    GROUP BY id
-    ORDER BY created_at DESC
-    LIMIT #{offset}, #{page_size}")
-
-  end
-
   def self.tagged_blogs(tagid, page_size=25, offset=0)
     find_by_sql(
     "SELECT b.* FROM blogs AS b
@@ -200,7 +156,8 @@ class Blog < ActiveRecord::Base
   end
   
   def webify_http
-    webcontent = content.gsub(/(https?:\/\/[^ ]*?)([.,;:]?)(( |\Z))/, '<a href="\1" class="ublog-link" target="_top">\1</a>\2\3')
+    webcontent = CGI.escapeHTML(content) # start off with clean content
+    webcontent.gsub!(/(https?:\/\/[^ ]*?)([.,;:]?)(( |\Z))/, '<a href="\1" class="ublog-link" target="_top">\1</a>\2\3')
     # Shorten the displayed URL if long
     runs = webcontent.split("</a>")
     runs.each do |run|
@@ -266,7 +223,7 @@ class Blog < ActiveRecord::Base
       # remove @reply from replies
       line = line.sub(/\A(@.*? )/, "")
     end
-    line
+    line # already escaped
   end
 
   def previous

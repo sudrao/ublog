@@ -1,6 +1,5 @@
 class SearchesController < ApplicationController
   # This is a virtual singleton resource
-  before_filter :authenticate
   before_filter :set_visitor_home
     
   def show

@@ -1,5 +1,4 @@
 class TagsubsController < ApplicationController
-  before_filter :authenticate
   before_filter :set_visitor_home
   before_filter :verify_owner, :only => [ :destroy ]
   

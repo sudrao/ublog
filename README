@@ -1,10 +1,19 @@
-ublog (pronounced You-blog) is a micro-blogging application meant for corporate use. This source code is a contribution from Cisco Systems, Inc.
+ublog (pronounced You-blog) is a micro-blogging application meant for corporate use. 
+The original (Rails 2.3.2) source code was a contribution from Cisco Systems, Inc. and is 
+also available here. Select rails2 branch on sudrao/ublog.
 
-The current source is a clone of what is running in Cisco with some proprietary stuff removed. That means it probably will not work as is.
+The current source is the Rails 3 version.
 
-Further, the code needs some work to port it to Rails 3. It was working under Rails 2.3.2. Some of the plugins and libraries it uses need to be updated or replaced to work under Rails 3.
+STATUS: Work in progress. Not all features are working as they were before moving to Rails 3.
+LICENSE: MIT
 
-Feel free to fork.
+Overview
+========
+ublog was created specifically to address the information security concerns 
+that corporations have when using cloud based services. 
+All data in ublog is stored in a server inside the Company firewall
+and is not accessible from outside, except via VPN. This makes it possible
+to post confidential information on ublog.
 
 Overview
 ========

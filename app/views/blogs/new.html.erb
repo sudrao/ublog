@@ -4,8 +4,8 @@
 <div id="blog_reply">
 <h3><%= "Type your reply to " + @target %></h3>
 
-<% form_for(@blog, :html => { :multipart => true }) do |f| %>
-  <%= f.error_messages %>
+<%= form_for(@blog, :html => { :multipart => true }) do |f| %>
+  <%= render "shared/error_messages", :target => @blog %>
 
   <p>
     <%= f.text_field :content, :size => 60, :maxlength => @size %>

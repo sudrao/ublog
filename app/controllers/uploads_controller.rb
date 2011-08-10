@@ -1,4 +1,6 @@
 class UploadsController < ApplicationController
+  respond_to :html, :xml
+  
   # GET /uploads
   # GET /uploads.xml
   def index
@@ -9,10 +11,7 @@ class UploadsController < ApplicationController
   def show
     @upload = Upload.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @upload }
-    end
+    respond_with(@upload)
   end
 
   # GET /uploads/new
@@ -20,15 +19,14 @@ class UploadsController < ApplicationController
   def new
     @upload = Upload.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @upload }
-    end
+    respond_with(@upload)
   end
 
   # GET /uploads/1/edit
   def edit
     @upload = Upload.find(params[:id])
+    
+    respond_with(@upload)
   end
 
   # POST /uploads
@@ -36,16 +34,12 @@ class UploadsController < ApplicationController
   def create
     @upload = Upload.new(params[:upload])
 
-    respond_to do |format|
-      if @upload.save
-        flash[:notice] = 'Upload was successfully created.'
-        format.html { redirect_to(@upload) }
-        format.xml  { render :xml => @upload, :status => :created, :location => @upload }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @upload.errors, :status => :unprocessable_entity }
-      end
+    if @upload.save
+      flash[:notice] = 'Attachment was successfully created.'
+    else
+      flash[:error] = "Could not upload your attachment."
     end
+    respond_with(@upload)
   end
 
   # PUT /uploads/1
@@ -53,16 +47,12 @@ class UploadsController < ApplicationController
   def update
     @upload = Upload.find(params[:id])
 
-    respond_to do |format|
-      if @upload.update_attributes(params[:upload])
-        flash[:notice] = 'Upload was successfully updated.'
-        format.html { redirect_to(@upload) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @upload.errors, :status => :unprocessable_entity }
-      end
+    if @upload.update_attributes(params[:upload])
+      flash[:notice] = 'Attachment was successfully saved.'
+    else
+      flash[:error] = "Could not upload your attachment."
     end
+    respond_with(@upload)
   end
 
   # DELETE /uploads/1
@@ -70,10 +60,6 @@ class UploadsController < ApplicationController
   def destroy
     @upload = Upload.find(params[:id])
     @upload.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(uploads_url) }
-      format.xml  { head :ok }
-    end
+    respond_with(@upload)
   end
 end

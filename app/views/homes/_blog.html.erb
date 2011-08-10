@@ -1,26 +1,13 @@
   <% if origin = blog.origin %>
   <tr>
-    <% asset = origin.asset %>
+    <% photo = origin.photo %>
     <td>
-      <%= link_to(image_tag(asset_type_path(asset, true), :class => "no-border"), home_path(origin)) %>
+      <%= link_to(image_tag(photo.url(:thumb), :class => "no-border"), home_path(origin)) %>
     </td>
     <td>
-      <%= link_to h(origin.ublog_name), home_path(origin) %> <%= ' ' + blog.webify + ' ---' %>
+      <%= link_to h(origin.ublog_name), home_path(origin) %> <%= (' ' + blog.webify + ' ---').html_safe %>
       <% created_time = blog.created_at.localtime -%>
-      <% elapsed = (Time.now - created_time).to_i -%>
-      <% if elapsed < (12 * 3600) -%>
-        <% if elapsed < (2 * 3600) -%>
-          <% if elapsed < (2 * 60) -%>
-            <span class="time-stamp"><%= elapsed.to_s + " seconds ago" %>
-          <% else -%>
-            <span class="time-stamp"><%= (elapsed/60).to_s + " minutes ago" %>
-          <% end -%>
-        <% else -%>
-          <span class="time-stamp"><%= (elapsed/3600).to_s + " hours ago" %>
-        <% end -%>
-      <% else -%>
-        <span class="time-stamp"><%= created_time.to_s[/^.*?[0-9]+ /] %></span>
-      <% end -%>
+      <span class="time-stamp"><%= time_ago_in_words(created_time)+ " ago" %>
       <%= '<span class="time-stamp"> from ' + h(blog.source) + " </span>" unless blog.source.blank? %>
       <% if (origin.ublog_name == @user) or (@proxy && (origin.proxy == @user)) %>
         <%= link_to image_tag("/images/delete.png", :class => "no-border", :title => "Delete"), blog, :confirm => 'Are you sure you want to delete this message?', :method => :delete %>
@@ -28,9 +15,11 @@
       <% if blog.thread and @nothread.nil? %>
         <%= link_to image_tag("/images/ub_thread.png", :class => "no-border", :title => "Thread"), home_thread_path(@home, blog.thread) %>
       <% end %>
-      <% if attach = blog.attachment %>
-        <%= link_to image_tag(attach.public_filename(:thumb)), attach.public_filename if attach.is_image %>
-        <%= link_to "Attached", attach.public_filename unless attach.is_image %>
+      <% uploads = blog.uploads %>
+      <% unless uploads.empty? %>
+        <% attachment = uploads[0].attachment %>
+        <%= link_to image_tag(attachment.url(:thumb)), attachment.url if uploads[0].is_image %>
+        <%= link_to "Attached", attachment.url unless uploads[0].is_image %>
       <% end %>
     </td>
     <td>

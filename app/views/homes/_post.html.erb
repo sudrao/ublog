@@ -1,6 +1,6 @@
 <% if (!@blocked && (@home.ublog_name != 'news')) || @admin %>
-<% form_for(@new_blog, :html => { :multipart => true }) do |f| %>
-  <%= f.error_messages %>
+<%= form_for(@new_blog, :html => { :multipart => true }) do |f| %>
+  <%= render "shared/error_messages", :target => @new_blog %>
 
   <p>
     <% if @owned_account -%>
@@ -17,7 +17,7 @@
   <%= f.hidden_field :prev_in_thread %>
   <p>
     <label for="upload">Attachment:</label>
-    <%= file_field_tag :uploaded_data %>
+    <%= file_field_tag 'attachment' %>
   </p>
   <%= hidden_field_tag(:proxy, @proxy) if @proxy %>
   <p>
