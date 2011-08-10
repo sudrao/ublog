@@ -1,259 +1,257 @@
+ublog (pronounced You-blog) is a micro-blogging application meant for corporate use. 
+The original (Rails 2.3.2) source code was a contribution from Cisco Systems, Inc. and is 
+also available here. Select rails2 branch on sudrao/ublog.
 
-This is the Rails 3 version of ublog with rspec tests.
+The current source is the Rails 3 version.
 
-== Welcome to Rails
+STATUS: Work in progress. Not all features are working as they were before moving to Rails 3.
+LICENSE: MIT
 
-Rails is a web-application framework that includes everything needed to create
-database-backed web applications according to the Model-View-Control pattern.
+Overview
+========
+ublog was created specifically to address the information security concerns 
+that corporations have when using cloud based services. 
+All data in ublog is stored in a server inside the Company firewall
+and is not accessible from outside, except via VPN. This makes it possible
+to post confidential information on ublog.
 
-This pattern splits the view (also called the presentation) into "dumb"
-templates that are primarily responsible for inserting pre-built data in between
-HTML tags. The model contains the "smart" domain objects (such as Account,
-Product, Person, Post) that holds all the business logic and knows how to
-persist themselves to a database. The controller handles the incoming requests
-(such as Save New Account, Update Product, Show Post) by manipulating the model
-and directing data to the view.
+ublog can be used as a simple communication application to send 140 character
+messages and hyperlinks. Other features include search, threads, attachments, 
+groups, group nudge, hash tags, and a client replacement called Narrow view mode 
+(see Tips and Tricks).
 
-In Rails, the model is handled by what's called an object-relational mapping
-layer entitled Active Record. This layer allows you to present the data from
-database rows as objects and embellish these data objects with business logic
-methods. You can read more about Active Record in
-link:files/vendor/rails/activerecord/README.html.
+How to use ublog
+================
 
-The controller and view are handled by the Action Pack, which handles both
-layers by its two parts: Action View and Action Controller. These two layers
-are bundled in a single package due to their heavy interdependence. This is
-unlike the relationship between the Active Record and Action Pack that is much
-more separate. Each of these packages can be used independently outside of
-Rails. You can read more about Action Pack in
-link:files/vendor/rails/actionpack/README.html.
+Log into ublog
 
+Click on the ublog <http://ublog.company.com/>  link and log in with your
+company user id and password. The first time you log in, a personal ublog
+account will be created for you. You will then be on your home page. You can
+bookmark that page. When you restart your browser or use another browser you
+will be prompted to log in again.
 
-== Getting Started
+Note: if you enter ublog using a URL for a group home page or another
+person's home page you should click the "Follow" button there to subscribe.
+After that you can go to your personal home page by clicking the ublog logo
+at top left and follow the remaining instructions here.
 
-1. At the command prompt, create a new Rails application:
-       <tt>rails new myapp</tt> (where <tt>myapp</tt> is the application name)
+Add a photo
 
-2. Change directory to <tt>myapp</tt> and start the web server:
-       <tt>cd myapp; rails server</tt> (run with --help for options)
+Click the ublog logo at top left if you are not already on your personal
+home page. You will see a placeholder photo on the right side of your home
+page. Click it to add your photo. You need to have a picture file with .png,
+.jpg, or .gif extension on your computer to upload. Follow the upload
+instructions. If your picture is not a square shape to start with, it is
+highly recommended to first use a photo editor and crop the photo to a
+square shape. This is because ublog uses a square format and it will
+compress or elongate your picture if it is not square already. Hint: right
+click the image file in Windows and select Microsoft Office Picture Manager
+to open it and click Edit to do the cropping.
 
-3. Go to http://localhost:3000/ and you'll see:
-       "Welcome aboard: You're riding Ruby on Rails!"
+Type a message
 
-4. Follow the guidelines to start developing your application. You can find
-the following resources handy:
+Answer the question, "what are you doing?" in the box provided. Or type
+anything you like. Just be aware that messages are limited to 140
+characters. Press enter or click the update button to save your message. It
+will appear just below with your user id. Optionally, attach a file before
+clicking the "Update" button. Attachments are currently restricted to images
+and a few other common file types. Attachments appear either as a thumbnail
+or the word "Attached" on the message and can be clicked for view/download.
 
-* The Getting Started Guide: http://guides.rubyonrails.org/getting_started.html
-* Ruby on Rails Tutorial Book: http://www.railstutorial.org/
+Find and follow other ublog users
 
+You can search for other Company users using the Search link in ublog. Search
+for their user id or name. Click and go to another user's home page from the
+search result. You can also reach another user's home page by clicking on
+their user id or photo in a message. Once there, you can click the Follow
+button to start following that user. Following means that user's messages
+will be shown on your home page as well as their's.
 
-== Debugging Rails
+Reply to someone
 
-Sometimes your application goes wrong. Fortunately there are a lot of tools that
-will help you debug it and get it back on the rails.
+There are three ways to reply to someone. If you see a message from someone,
+you can click the reply link on that message and type in your reply. The
+reply will appear in both your home page as well as the person or group to
+whom you replied. Another way is to visit a group or another person's home
+page and type in something in their message box. Yet another way, is to stay
+on your home page and start a message with @userid ... where userid is that
+other person's Company user id or group name. See more information about
+groups below.
 
-First area to check is the application log files. Have "tail -f" commands
-running on the server.log and development.log. Rails will automatically display
-debugging and runtime information to these files. Debugging info will also be
-shown in the browser on requests from 127.0.0.1.
+Threads
 
-You can also log your own messages directly into the log file from your code
-using the Ruby logger class from inside your controllers. Example:
+Replies get automatically threaded if you use the reply link on any message.
+You can reply to yourself to take advantage of threading. Threaded messages
+have a discussion bubble icon. Mouse over the recepient's ublog id to see
+the previous message in thread. Click the  icon to see all messages in
+thread.
 
-  class WeblogController < ActionController::Base
-    def destroy
-      @weblog = Weblog.find(params[:id])
-      @weblog.destroy
-      logger.info("#{Time.now} Destroyed Weblog ID ##{@weblog.id}!")
-    end
-  end
+Email Digest
 
-The result will be a message in your log file along the lines of:
+If you like email then you might want your friends messages delivered to
+your email inbox. You can enable an email digest delivery by visiting the
+Subs link at the top of your home page. On that page, enable email by
+selecting an email notification period and clicking the Set button. If you
+don't do anything else, you will get email from ublog with replies from
+other users which were directed to you.
 
-  Mon Oct 08 14:22:29 +1000 2007 Destroyed Weblog ID #1!
+In addition to replies, you can selectively enable email delivery for
+individual accounts that you already follow. You need to visit and click the
+"follow" button on the other accounts beforehand. Otherwise you will not see
+those accounts listed on the Subs page.
 
-More information on how to use the logger is at http://www.ruby-doc.org/core/
+The email digest comes to your inbox. It will contain messages posted to the
+accounts you selected.
 
-Also, Ruby documentation can be found at http://www.ruby-lang.org/. There are
-several books available online as well:
+Note that if you set up or change the email settings, either time period or
+accounts for email notify, then ublog assumes you are already updated and
+caught up with all your messages. You will only get a digest of messages
+that come in after that.
 
-* Programming Ruby: http://www.ruby-doc.org/docs/ProgrammingRuby/ (Pickaxe)
-* Learn to Program: http://pine.fm/LearnToProgram/ (a beginners guide)
+Groups
 
-These two books will bring you up to speed on the Ruby language and also on
-programming in general.
+Groups are ublog accounts for a group of ublog users. Anyone can create a
+group. Groups are very much like regular ublog accounts. Once created,
+people can reply to the group and follow the group. Groups can be public or
+private. Public groups are accessible to all ublog users. Anyone can follow
+or post to the group. Private groups limit participation. The owner
+initially controls the group membership. After members are added to the
+private group, all members have the same privileges of adding or removing
+members in the private group. Only members can post to a private group. In
+addition, the messages are visible only to members.
 
+Group email nudge
 
-== Debugger
+For groups that want to migrate from email to ublog, the group nudge feature
+can help. Once set up, ublog will remind group members via email to access
+ublog and read recent updates on a ublog group. These members don't even
+need to have a ublog account to receive the nudge but are encouraged to log
+in.
 
-Debugger support is available through the debugger command when you start your
-Mongrel or WEBrick server with --debugger. This means that you can break out of
-execution at any point in the code, investigate and change the model, and then,
-resume execution! You need to install ruby-debug to run the server in debugging
-mode. With gems, use <tt>sudo gem install ruby-debug</tt>. Example:
+First, you set up a ublog group as described above. Next, as creator and
+owner of the group, visit the "Subs" link within the group page. Here set an
+email notification period as well as a Company mailing list (alias,) and click
+the "set" button.
 
-  class WeblogController < ActionController::Base
-    def index
-      @posts = Post.find(:all)
-      debugger
-    end
-  end
+Whenever one or more messages are posted to the ublog group within the
+notification period, an automatic email will be sent to the mailer list
+indicating that new messages are available on ublog. Note that the full
+content of the ublog messages are not sent in the email message. This is to
+encourage group members to visit ublog directly and participate in the
+group's discussion via ublog.
 
-So the controller will accept the action, run the first line, then present you
-with a IRB prompt in the server window. Here you can do things like:
+As group members get used to checking and updating on ublog regularly, they
+can unsubscribe from the mailing list that was used for the group
+nudge. To allow unsubscribe, it is recommended to use a brand new mailer
+list created just for this purpose and subscribe group members individually,
+and not by reusing existing lists.
 
-  >> @posts.inspect
-  => "[#<Post:0x14a6be8
-          @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>,
-       #<Post:0x14a6620
-          @attributes={"title"=>"Rails", "body"=>"Only ten..", "id"=>"2"}>]"
-  >> @posts.first.title = "hello from a debugger"
-  => "hello from a debugger"
+Tags
 
-...and even better, you can examine how your runtime objects actually work:
+Tags are any words in your message starting with the # sign. For example,
+the message, "Any update on #collaboration tools?" will create a tag called
+collaboration within ublog. This message along with any new messages with
+#collaboration will be available in a special tag page for collaboration.
+You can find existing tags using the Tags link at the top. Tags are a simple
+way to keep related messages together. Tagged messages also appear in the
+usual place in your account and tags can also be in replies.
 
-  >> f = @posts.first
-  => #<Post:0x13630c4 @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>
-  >> f.
-  Display all 152 possibilities? (y or n)
+Recently used tags appear automatically on each home page. By using a tag in
+your message you can get your message noticed by all ublog users, whether
+they follow you or not. This is a way to advertise and cross-pollinate ideas
+across groups.
 
-Finally, when you're ready to resume execution, you can enter "cont".
+Search
 
+Indexed search is available for users, groups, messages, and tags. Click the
+search link. Type in some words in the search box and click "Find now." The
+results show the number of hits in each of these types and another click
+will get you the results for one type. Click a second time to hide the
+results.
 
-== Console
+Search words can end in * to indicate a "wildcard". Also, you can use OR
+between words (uppercase OR) otherwise the default is AND.
 
-The console is a Ruby shell, which allows you to interact with your
-application's domain model. Here you'll have all parts of the application
-configured, just like it is when the application is running. You can inspect
-domain models, change values, and save to the database. Starting the script
-without arguments will launch it in the development environment.
+RSS notification
 
-To start the console, run <tt>rails console</tt> from the application
-directory.
+ublog can generate Atom and RSS feeds. To get the feed from any account,
+click the RSS icon  on any page. Paste the suggested URL into any RSS reader
+as the subscription URL. That's it. You should start receiving messages from
+that account in your RSS reader. You can follow individual or group accounts
+via such feeds. Note that private group accounts are password protected and
+you need to be a member of that group to get those messages.
 
-Options:
+To get an RSS feed for all public messages in ublog, visit the "Timeline"
+link on any page. The RSS icon on that page can be used to get the RSS URL
+for all ublog messages.
 
-* Passing the <tt>-s, --sandbox</tt> argument will rollback any modifications
-  made to the database.
-* Passing an environment name as an argument will load the corresponding
-  environment. Example: <tt>rails console production</tt>.
+Firefox and other browsers that support RSS will show an RSS icon when you
+visit any ublog page that has RSS support. That's another alternative.
+Firefox shows this icon at the top in the same box as the page URL, toward
+the right end.
 
-To reload your controllers and models after launching the console run
-<tt>reload!</tt>
+URL Shrinking (needs sudrao/bitcompress installed)
 
-More information about irb can be found at:
-link:http://www.rubycentral.com/pickaxe/irb.html
+Web addresses tend to be very long at times and consume valuable characters
+in your ublog message. There is a link called "Shrink my URL" on ublog pages
+to reduce any URL's length. Click this link, then paste your long URL into
+the box and click the Shrink button. It will display a URL starting with
+http://bit.company.com/... Right click and copy this new URL, then paste into
+your message.
 
+The bit.company.com server saves your original URL. Since this server is
+inside the Company firewall, it is safe to shrink Companyinternal URL's using
+this service. When anyone clicks on a shortened URL, it looks up its
+database and redirects to the original URL.
 
-== dbconsole
+Note: bitcompress is a Sinatra app that goes with ublog. It is recommended over
+outside URL compression websites because URL's often contain confidential project 
+names or other sensitive information.
 
-You can go to the command line of your database directly through <tt>rails
-dbconsole</tt>. You would be connected to the database with the credentials
-defined in database.yml. Starting the script without arguments will connect you
-to the development database. Passing an argument will connect you to a different
-database, like <tt>rails dbconsole production</tt>. Currently works for MySQL,
-PostgreSQL and SQLite 3.
+Twitter and Yammer Cross-posting
 
-== Description of Contents
+If you use Twitter, you can now post a message on ublog with a #twt tag and
+it will appear on your Twitter account after a short delay. Similarly, if
+you use Yammer, you can post a message on ublog with a #yam tag and it will
+appear on Yammer's Company network. Before doing this, you need to have a
+Twitter or Yammer account and set up your ublog account for cross-posting.
+Just visit http://ublog.company.com/twitter or http://ublog.company.com/yammer
+as appropriate, and follow the instructions there.
 
-The default directory structure of a generated Ruby on Rails application:
+Once set up, you can also post on Twitter or Yammer with a #ublog tag and
+the message will appear in ublog after a short delay. This allows you to
+post to ublog indirectly from SMS text messages or Twitter or Yammer
+clients. Check Twitter and Yammer sites for more information on how to use
+those services with SMS and clients.
 
-  |-- app
-  |   |-- controllers
-  |   |-- helpers
-  |   |-- mailers
-  |   |-- models
-  |   `-- views
-  |       `-- layouts
-  |-- config
-  |   |-- environments
-  |   |-- initializers
-  |   `-- locales
-  |-- db
-  |-- doc
-  |-- lib
-  |   `-- tasks
-  |-- log
-  |-- public
-  |   |-- images
-  |   |-- javascripts
-  |   `-- stylesheets
-  |-- script
-  |-- test
-  |   |-- fixtures
-  |   |-- functional
-  |   |-- integration
-  |   |-- performance
-  |   `-- unit
-  |-- tmp
-  |   |-- cache
-  |   |-- pids
-  |   |-- sessions
-  |   `-- sockets
-  `-- vendor
-      `-- plugins
+If you use both Twitter and Yammer then you can enable each one using the
+links provided above. After that you can use #twt and #yam simultaneously in
+your ublog post and cross-post to the other two sites.
 
-app
-  Holds all the code that's specific to this particular application.
+Embed ublog on Your Website
 
-app/controllers
-  Holds controllers that should be named like weblogs_controller.rb for
-  automated URL mapping. All controllers should descend from
-  ApplicationController which itself descends from ActionController::Base.
+If you already have a group website in the Company, you may be able to add ublog
+to it. Your ublog group page on ublog can appear on your website. This needs
+a little work on the group website but essentially you use ublog's embed or
+iframe features for this. Any ublog home page URL with a .json, .embed, or
+.iframe extension can be used. .json and .embed are read-only views while
+.iframe allows two-way communication.
 
-app/models
-  Holds models that should be named like post.rb. Models descend from
-  ActiveRecord::Base by default.
-
-app/views
-  Holds the template files for the view that should be named like
-  weblogs/index.html.erb for the WeblogsController#index action. All views use
-  eRuby syntax by default.
-
-app/views/layouts
-  Holds the template files for layouts to be used with views. This models the
-  common header/footer method of wrapping views. In your views, define a layout
-  using the <tt>layout :default</tt> and create a file named default.html.erb.
-  Inside default.html.erb, call <% yield %> to render the view using this
-  layout.
-
-app/helpers
-  Holds view helpers that should be named like weblogs_helper.rb. These are
-  generated for you automatically when using generators for controllers.
-  Helpers can be used to wrap functionality for your views into methods.
-
-config
-  Configuration files for the Rails environment, the routing map, the database,
-  and other dependencies.
-
-db
-  Contains the database schema in schema.rb. db/migrate contains all the
-  sequence of Migrations for your schema.
-
-doc
-  This directory is where your application documentation will be stored when
-  generated using <tt>rake doc:app</tt>
-
-lib
-  Application specific libraries. Basically, any kind of custom code that
-  doesn't belong under controllers, models, or helpers. This directory is in
-  the load path.
-
-public
-  The directory available for the web server. Contains subdirectories for
-  images, stylesheets, and javascripts. Also contains the dispatchers and the
-  default HTML files. This should be set as the DOCUMENT_ROOT of your web
-  server.
-
-script
-  Helper scripts for automation and generation.
-
-test
-  Unit and functional tests along with fixtures. When using the rails generate
-  command, template test files will be generated for you and placed in this
-  directory.
-
-vendor
-  External libraries that the application depends on. Also includes the plugins
-  subdirectory. If the app has frozen rails, those gems also go here, under
-  vendor/rails/. This directory is in the load path.
+Tips and tricks
+* Clicking the ublog logo  takes you to your home page from anywhere in
+ublog.
+* Clicking the "All" button shows all messages on ublog. The "Mine" button
+shows your messages, and from those you follow. Both options show public and
+any private messages you are entitled to see. Use the Timeline link to see
+all public messages on ublog.
+* You can delete your own messages for example to correct something. Use the
+icon on the message.
+* There are buttons for "Narrow view" and "Mobile view" at the bottom of
+your home page. Use the Narrow view to simulate a desktop client. Make the
+browser window narrow and short while in this mode.  Mobile view is similar
+to narrow view but it is automatically selected when you log in from an iPhone 
+or Blackberry or other mobile device. Mobile view does not use Javascript.
+* There is an easy to remember URL for each user and group: the ublog URL
+plus the user id or group id. For example, http://ublog.company.com/jdoe will
+go to jdoe's ublog home page.
