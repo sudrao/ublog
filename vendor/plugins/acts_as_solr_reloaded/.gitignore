@@ -3,6 +3,7 @@
 *_pid
 coverage/*
 coverage.data
+!solr
 solr/solr/data/*
 .svn
 test/db/*.db
