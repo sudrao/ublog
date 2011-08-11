@@ -23,5 +23,12 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false # since we use raw sql, set to false
+  
+  # Clean up tables before each example
+  config.before :each do
+    (ActiveRecord::Base.connection.tables - %w{schema_migrations}).each do |table_name|
+      ActiveRecord::Base.connection.execute "TRUNCATE TABLE #{table_name};"
+    end
+  end
 end

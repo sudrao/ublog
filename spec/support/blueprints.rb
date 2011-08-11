@@ -15,7 +15,7 @@ Home.blueprint do
 end
 
 Blog.blueprint do
-  home_id        { 1 }
+  home_id        { Home.make!.id }
   content        { "#{sn}: This is a sample message."}
   is_private     { 0 }
   thread         { sn.to_i + 1 }

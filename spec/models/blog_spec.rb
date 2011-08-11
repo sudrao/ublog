@@ -40,10 +40,7 @@ describe Blog do
       h2 = Home.make!
       make_blogs(h2, 2, 1, group) # private by h2
       make_blogs(h, 3, 1, group) # private by h
-      unless ENV['TRAVIS']
-        # failing in travis for some reason
-        Blog.all_blogs(h2).count.should == 7
-      end
+      Blog.all_blogs(h2).count.should == 7
       Blog.all_blogs(h).count.should == 10 # h also subscribed to group so gets h2 blogs
       b = Blog.all_blogs(h2).each do |bl|
         bl.content.should_not be_nil  # verify we can iterate over results
