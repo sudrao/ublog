@@ -29,7 +29,7 @@ describe Blog do
       return h, group     
     end
 
-    def make_blogs(home, count=1, is_private=false, group=nil)
+    def make_blogs(home, count=1, is_private=0, group=nil)
       b = Blog.make(count, :home_id => home.id, :to_id => group.nil? ? nil:group.id, :is_private => is_private)
       b.each { |bl| bl.save } # work around machinist inability to save even with make! above
     end
@@ -38,8 +38,8 @@ describe Blog do
       Blog.make!(5) # non-private
       h, group = subscribers(1)
       h2 = Home.make!
-      make_blogs(h2, 2, true, group) # private by h2
-      make_blogs(h, 3, true, group) # private by h
+      make_blogs(h2, 2, 1, group) # private by h2
+      make_blogs(h, 3, 1, group) # private by h
       Blog.all_blogs(h2).count.should == 7
       Blog.all_blogs(h).count.should == 10 # h also subscribed to group so gets h2 blogs
       b = Blog.all_blogs(h2).each do |bl|
@@ -52,12 +52,12 @@ describe Blog do
       h, g = subscribers(1) # my home and subscribed group
       h2 = Home.make! # another's home
       make_blogs(h, 10) # mine, public
-      make_blogs(h, 1, true, g) # mine, private
-      make_blogs(h2, 4, true, g) # other's private messages to subscribed group
-      make_blogs(h2, 5, false, g) # other's public messages to subscribed group
+      make_blogs(h, 1, 1, g) # mine, private
+      make_blogs(h2, 4, 1, g) # other's private messages to subscribed group
+      make_blogs(h2, 5, 0, g) # other's public messages to subscribed group
       g2 = Home.make! # other group
-      make_blogs(h2, 7, false, g2) # other's public messages to unsubscribed group
-      make_blogs(h2, 3, true, g2) # other's private messages to unsubscribed group
+      make_blogs(h2, 7, 0, g2) # other's public messages to unsubscribed group
+      make_blogs(h2, 3, 1, g2) # other's private messages to unsubscribed group
       return h, g, h2, g2
     end    
     
