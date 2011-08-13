@@ -1,4 +1,4 @@
 rvm: 1.9.2
 env: RAILS_ENV=test
-script: spec/travis.rb
+before_script: spec/travis.rb
 

@@ -48,3 +48,7 @@ end
 #     DatabaseCleaner.strategy = :transaction
 #   end
 #
+# Need a better place for these constants but need them in the other config files
+TEST1 = "test1" # I
+TEST2 = "test2" # another user
+

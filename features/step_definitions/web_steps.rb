@@ -2,15 +2,15 @@ require 'uri'
 require 'cgi'
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
-Given /^(?:|I )am on (?:|the )(.+) page$/ do |page_name|
+Given /^(?:|I )am on (.+) page$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )go to (?:|the )(.+) page$/ do |page_name|
+When /^(?:|I )go to (.+) page$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )visit (?:|the )(.+) page$/ do |page_name|
+When /^(?:|I )visit (.+) page$/ do |page_name|
   visit path_to(page_name)
 end
 
@@ -67,10 +67,6 @@ When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"$/ do |path, field|
   attach_file(field, File.expand_path(path))
 end
 
-Then /^(?:|I )should be on (?:|the )(.+) page$/ do |page_name|
-  page.should have_path(path_to(page_name))
-end
-
 Then /^(?:|I )should see "([^"]*)"$/ do |text|
   if page.respond_to? :should
     page.should have_content(text)
@@ -107,13 +103,17 @@ Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
   end
 end
 
-Then /^(?:|I )should be on (.+)$/ do |page_name|
+Then /^(?:|I )should be on (.+) page$/ do |page_name|
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
     current_path.should == path_to(page_name)
   else
     assert_equal path_to(page_name), current_path
   end
+end
+
+Then /^(?:|I )should be redirected to (.+?) page$/ do |page_name|
+  Then "I should be on #{page_name} page"
 end
 
 Then /^(?:|I )should have the following query string:$/ do |expected_pairs|

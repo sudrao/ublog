@@ -73,9 +73,9 @@ end
 #    includes the case of .js with ?iframe=1
 # In all cases, set @user, @visitor_home, @admin
 def authenticate
-  logger.debug "Host name is: " + request.host
-  logger.debug "session user is:" + (session[:user].nil? ? "nil" : session[:user])
-  logger.debug request.headers["HTTP_AUTHORIZATION"].nil? ? "No auth present in request" : "Auth headers present"
+#  logger.debug "Host name is: " + request.host
+#  logger.debug "session user is:" + (session[:user].nil? ? "nil" : session[:user])
+#  logger.debug request.headers["HTTP_AUTHORIZATION"].nil? ? "No auth present in request" : "Auth headers present"
   if session[:user]
     set_auth_vars
   elsif fake_auth_permitted?

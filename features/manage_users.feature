@@ -5,8 +5,8 @@ Feature: Manage users
   
   Scenario: Register new user or log in
     Given I am not logged in
-    And I visit the root page
+    And I go to the root page
 
-    Then I should be on the login page
+    Then I should be redirected to the login page
     When I enter my credentials
     Then I should be on my home page

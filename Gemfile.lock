@@ -54,6 +54,7 @@ GEM
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    fabrication (1.0.1)
     ffi (1.0.9)
     gherkin (2.4.6)
       json (>= 1.4.6)
@@ -131,6 +132,7 @@ DEPENDENCIES
   capybara
   cucumber-rails
   database_cleaner
+  fabrication
   hpricot
   machinist (>= 2.0.0.beta2)
   mysql2 (< 0.3)

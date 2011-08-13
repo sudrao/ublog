@@ -8,20 +8,20 @@ module NavigationHelpers
   def path_to(page_name)
     case page_name
 
-    when 'root'
-      '/'
+    when 'the root', 'root'
+      url_for(:controller => "homes", :action => "index")
 
-    when 'home'
-      '/homes'
+    when 'the home', 'home'
+      homes_path
       
-    when 'login'
-      '/session'
+    when 'the login', 'login'
+      session_path
 
     when 'my home'
-      '/homes/1'
+      home_path(Home.find_by_ublog_name(TEST1))
 
     when "another user's"
-      '/homes/2'
+      home_path(Home.find_by_ublog_name(TEST2))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

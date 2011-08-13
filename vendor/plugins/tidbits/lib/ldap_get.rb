@@ -14,6 +14,9 @@ class LdapGet
   
   # Get first and last name of a user in Company
   def self.name (userid)
+    # For now it just returns userid itself
+    return userid
+=begin
     return userid if userid == "#{TESTUSER}"
     ldap = Net::LDAP.new
     ldap.host = "ldap.#{DOMAIN}.com"
@@ -35,5 +38,6 @@ class LdapGet
       end
     end
     return name
+=end
   end
 end

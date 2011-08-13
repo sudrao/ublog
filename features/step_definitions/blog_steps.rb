@@ -1,7 +1,12 @@
 Given /^I post a blog$/ do
-  pending # express the regexp above with the code you wish you had
+  fill_in('blog_content', :with => BLOG1 + Fabricate.sequence(:number).to_s)
+  click_button("Update")
 end
 
-Then /^I should see my blog(| appear)$/ do
-  pending # express the regexp above with the code you wish you had
+Then /^I should see my blog(?:| appear)$/ do
+  if page.respond_to? :should
+    page.should have_content(BLOG1)
+  else
+    assert page.has_content?(BLOG1)
+  end
 end
