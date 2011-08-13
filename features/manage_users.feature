@@ -7,6 +7,6 @@ Feature: Manage users
     Given I am not logged in
     And I visit the root page
 
-    Then I should see the login page
+    Then I should be on the login page
     When I enter my credentials
-    Then I should see my home page
+    Then I should be on my home page

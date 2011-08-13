@@ -2,28 +2,15 @@ require 'uri'
 require 'cgi'
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
-def path_to(page_name)
-  case page_name
-  when 'root'
-    '/'
-  when 'login'
-    '/session'
-  when 'home'
-    '/homes/1'
-  when "another user's"
-    'homes/2'
-  end
-end
-  
-Given /^(?:|I )am on (?:|the |my )(.+) page$/ do |page_name|
+Given /^(?:|I )am on (?:|the )(.+) page$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )go to (?:|the |my )(.+) page$/ do |page_name|
+When /^(?:|I )go to (?:|the )(.+) page$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )visit (?:|the |my )(.+) page$/ do |page_name|
+When /^(?:|I )visit (?:|the )(.+) page$/ do |page_name|
   visit path_to(page_name)
 end
 
@@ -78,6 +65,10 @@ end
 
 When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"$/ do |path, field|
   attach_file(field, File.expand_path(path))
+end
+
+Then /^(?:|I )should be on (?:|the )(.+) page$/ do |page_name|
+  page.should have_path(path_to(page_name))
 end
 
 Then /^(?:|I )should see "([^"]*)"$/ do |text|
