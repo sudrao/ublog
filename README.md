@@ -1,14 +1,19 @@
+UBLOG  
+=====
+[![travis](https://secure.travis-ci.org/sudrao/ublog.png)](http://travis-ci.org/sudrao/ublog)
+
 ublog (pronounced You-blog) is a micro-blogging application meant for corporate use. 
 The original (Rails 2.3.2) source code was a contribution from Cisco Systems, Inc. and is 
 also available here. Select rails2 branch on sudrao/ublog.
 
 The current source is the Rails 3 version.
 
-STATUS: Work in progress. Not all features are working as they were before moving to Rails 3.
+STATUS: Upgrade to Rails 3 in progress. Not all features are working as they were before.
 LICENSE: MIT
 
 Overview
 ========
+
 ublog was created specifically to address the information security concerns 
 that corporations have when using cloud based services. 
 All data in ublog is stored in a server inside the Company firewall
@@ -20,13 +25,32 @@ messages and hyperlinks. Other features include search, threads, attachments,
 groups, group nudge, hash tags, and a client replacement called Narrow view mode 
 (see Tips and Tricks).
 
+Installation
+============
+
+Dependencies
+------------
+
+* ImageMagick
+
+* An auth module. You also need to have some way to authenticate users. This will vary
+for each Company.
+
+* sudrao/bitcompress
+
+Platforms
+---------
+
+Tested on Mac OS X and Linux. Windows is not supported yet.
+
 How to use ublog
 ================
 
 Log into ublog
+--------------
 
-Click on the ublog <http://ublog.company.com/>  link and log in with your
-company user id and password. The first time you log in, a personal ublog
+Click on the ublog link e.g. http://ublog.company.com/  and log in with your
+Company user id and password. The first time you log in, a personal ublog
 account will be created for you. You will then be on your home page. You can
 bookmark that page. When you restart your browser or use another browser you
 will be prompted to log in again.
@@ -37,6 +61,7 @@ After that you can go to your personal home page by clicking the ublog logo
 at top left and follow the remaining instructions here.
 
 Add a photo
+-----------
 
 Click the ublog logo at top left if you are not already on your personal
 home page. You will see a placeholder photo on the right side of your home
@@ -50,6 +75,7 @@ click the image file in Windows and select Microsoft Office Picture Manager
 to open it and click Edit to do the cropping.
 
 Type a message
+--------------
 
 Answer the question, "what are you doing?" in the box provided. Or type
 anything you like. Just be aware that messages are limited to 140
@@ -60,6 +86,7 @@ and a few other common file types. Attachments appear either as a thumbnail
 or the word "Attached" on the message and can be clicked for view/download.
 
 Find and follow other ublog users
+---------------------------------
 
 You can search for other Company users using the Search link in ublog. Search
 for their user id or name. Click and go to another user's home page from the
@@ -69,6 +96,7 @@ button to start following that user. Following means that user's messages
 will be shown on your home page as well as their's.
 
 Reply to someone
+----------------
 
 There are three ways to reply to someone. If you see a message from someone,
 you can click the reply link on that message and type in your reply. The
@@ -80,6 +108,7 @@ other person's Company user id or group name. See more information about
 groups below.
 
 Threads
+-------
 
 Replies get automatically threaded if you use the reply link on any message.
 You can reply to yourself to take advantage of threading. Threaded messages
@@ -88,6 +117,7 @@ the previous message in thread. Click the  icon to see all messages in
 thread.
 
 Email Digest
+------------
 
 If you like email then you might want your friends messages delivered to
 your email inbox. You can enable an email digest delivery by visiting the
@@ -110,6 +140,7 @@ caught up with all your messages. You will only get a digest of messages
 that come in after that.
 
 Groups
+------
 
 Groups are ublog accounts for a group of ublog users. Anyone can create a
 group. Groups are very much like regular ublog accounts. Once created,
@@ -122,6 +153,7 @@ members in the private group. Only members can post to a private group. In
 addition, the messages are visible only to members.
 
 Group email nudge
+-----------------
 
 For groups that want to migrate from email to ublog, the group nudge feature
 can help. Once set up, ublog will remind group members via email to access
@@ -148,11 +180,12 @@ list created just for this purpose and subscribe group members individually,
 and not by reusing existing lists.
 
 Tags
+----
 
 Tags are any words in your message starting with the # sign. For example,
-the message, "Any update on #collaboration tools?" will create a tag called
+the message, `"Any update on #collaboration tools?"` will create a tag called
 collaboration within ublog. This message along with any new messages with
-#collaboration will be available in a special tag page for collaboration.
+*`#collaboration`* will be available in a special tag page for collaboration.
 You can find existing tags using the Tags link at the top. Tags are a simple
 way to keep related messages together. Tagged messages also appear in the
 usual place in your account and tags can also be in replies.
@@ -163,6 +196,7 @@ they follow you or not. This is a way to advertise and cross-pollinate ideas
 across groups.
 
 Search
+------
 
 Indexed search is available for users, groups, messages, and tags. Click the
 search link. Type in some words in the search box and click "Find now." The
@@ -174,6 +208,7 @@ Search words can end in * to indicate a "wildcard". Also, you can use OR
 between words (uppercase OR) otherwise the default is AND.
 
 RSS notification
+----------------
 
 ublog can generate Atom and RSS feeds. To get the feed from any account,
 click the RSS icon  on any page. Paste the suggested URL into any RSS reader
@@ -192,6 +227,7 @@ Firefox shows this icon at the top in the same box as the page URL, toward
 the right end.
 
 URL Shrinking (needs sudrao/bitcompress installed)
+-------------
 
 Web addresses tend to be very long at times and consume valuable characters
 in your ublog message. There is a link called "Shrink my URL" on ublog pages
@@ -210,6 +246,7 @@ outside URL compression websites because URL's often contain confidential projec
 names or other sensitive information.
 
 Twitter and Yammer Cross-posting
+--------------------------------
 
 If you use Twitter, you can now post a message on ublog with a #twt tag and
 it will appear on your Twitter account after a short delay. Similarly, if
@@ -230,6 +267,7 @@ links provided above. After that you can use #twt and #yam simultaneously in
 your ublog post and cross-post to the other two sites.
 
 Embed ublog on Your Website
+---------------------------
 
 If you already have a group website in the Company, you may be able to add ublog
 to it. Your ublog group page on ublog can appear on your website. This needs
@@ -239,19 +277,25 @@ iframe features for this. Any ublog home page URL with a .json, .embed, or
 .iframe allows two-way communication.
 
 Tips and tricks
+===============
+
 * Clicking the ublog logo  takes you to your home page from anywhere in
 ublog.
+
 * Clicking the "All" button shows all messages on ublog. The "Mine" button
 shows your messages, and from those you follow. Both options show public and
 any private messages you are entitled to see. Use the Timeline link to see
 all public messages on ublog.
+
 * You can delete your own messages for example to correct something. Use the
 icon on the message.
+
 * There are buttons for "Narrow view" and "Mobile view" at the bottom of
 your home page. Use the Narrow view to simulate a desktop client. Make the
 browser window narrow and short while in this mode.  Mobile view is similar
 to narrow view but it is automatically selected when you log in from an iPhone 
 or Blackberry or other mobile device. Mobile view does not use Javascript.
+
 * There is an easy to remember URL for each user and group: the ublog URL
 plus the user id or group id. For example, http://ublog.company.com/jdoe will
 go to jdoe's ublog home page.
