@@ -16,5 +16,3 @@ Feature: Manage blogs
     Then I should see my blog appear
     When I visit my home page
     Then I should see my blog
-
-

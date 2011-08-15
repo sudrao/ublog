@@ -39,4 +39,5 @@ group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'fabrication'
+  gem 'escape_utils' # to suppress rack/utils regexp warning
 end

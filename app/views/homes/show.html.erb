@@ -6,9 +6,9 @@
 </div>
 <div id="friends">
 <% unless @is_private %>
-Following: <%= link_to((@friend_homes.length + @tags.length).to_s, home_follow_path(@home)) %><br />
+Following: <%= link_to((@friend_homes.length + @tags.length).to_s, home_follow_path(@home), :id => 'following') %><br />
 <% end %>
-Followed by: <%= link_to(@follower_homes.length.to_s, home_follow_path(@home)) %><br />
+Followed by: <%= link_to(@follower_homes.length.to_s, home_follow_path(@home), :id => 'followed-by') %><br />
 </div>
 </div>
 

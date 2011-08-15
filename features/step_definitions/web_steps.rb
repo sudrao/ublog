@@ -14,6 +14,11 @@ When /^(?:|I )visit (.+) page$/ do |page_name|
   visit path_to(page_name)
 end
 
+When /^(?:|I )check who all I am following$/ do
+  click_link "following"
+  page.should have_content("Subscriptions")
+end
+
 When /^(?:|I )press "([^"]*)"$/ do |button|
   click_button(button)
 end

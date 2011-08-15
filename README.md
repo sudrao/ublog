@@ -9,6 +9,7 @@ also available here. Select rails2 branch on sudrao/ublog.
 The current source is the Rails 3 version.
 
 STATUS: Upgrade to Rails 3 in progress. Not all features are working as they were before.
+
 LICENSE: MIT
 
 Overview

@@ -17,6 +17,18 @@ Given /^the following homes:$/ do |homes|
   Home.create!(homes.hashes)
 end
 
+When /^(?:|I )follow that user$/ do
+  click_button "Follow this account"
+end
+
+Then /^(?:|I )should see a following count of (\d+)$/ do |friend_count|
+  page.should have_xpath("//div[@id='friends']/a", :text => "#{friend_count}") # match number of friends
+end
+
+Then /^I should see that user's name$/ do
+  page.should have_content(TEST2) # TEST2 is the friend I follow
+end
+
 When /^I delete the (\d+)(?:st|nd|rd|th) home$/ do |pos|
   visit homes_path
   within("table tr:nth-child(#{pos.to_i+1})") do
