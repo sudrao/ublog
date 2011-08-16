@@ -4,7 +4,9 @@ Given /^I am not logged in$/ do
 end
 
 When /^I enter my credentials$/ do
-  my_log_in(TEST1, SECRET1)
+  fill_in('username', :with => TEST1)
+  fill_in('password', :with => SECRET1)
+  click_button('Log in')
   visit path_to("home")
 end
 
@@ -23,6 +25,11 @@ end
 
 Given /^the following homes:$/ do |homes|
   Home.create!(homes.hashes)
+end
+
+Given /^I have subscribed to another user$/ do
+    Given "I go to another user's page"
+    When 'I follow that user'
 end
 
 When /^(?:|I )follow that user$/ do
