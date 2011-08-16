@@ -15,11 +15,3 @@ Feature: make friends
     When I check who all I am following
     Then I should see that user's name
 
-  @javascript
-  Scenario: reply to someone
-    Given I have subscribed to another user
-      And I see another user's blog
-    When I click the reply link
-    Then I should see a reply dialog box
-    When I type in a reply and submit it
-    Then I should see my reply message

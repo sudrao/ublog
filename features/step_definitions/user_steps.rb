@@ -13,6 +13,14 @@ Given /^I am logged in$/ do
   When 'I enter my credentials'
 end
 
+Given /^(?:|I )log in via URL$/ do
+  Capybara.app_host = "http://#{TEST1}:#{SECRET1}@127.0.0.1:3001"
+  driver = Selenium::Webdriver.for(page.driver.options[:browser])
+  visit session_path
+  click_button "Log in"
+  visit path_to("home")
+end
+
 Given /^the following homes:$/ do |homes|
   Home.create!(homes.hashes)
 end

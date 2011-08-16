@@ -28,7 +28,7 @@ class Blog < ActiveRecord::Base
     b = Blog.arel_table
     f = Friend.arel_table
     
-    not_private = b[:is_private].eq(nil)
+    not_private = b[:is_private].eq(nil).or(b[:is_private].eq(false))
     own_blog = b[:home_id].eq(home_id)
     subscribed = f[:home_id].eq(home_id).and(f[:is_approved].eq(true)).and(b[:is_private].eq(true))
     
@@ -61,7 +61,7 @@ class Blog < ActiveRecord::Base
     f = Friend.arel_table
     ts = Tagsub.arel_table
     
-    not_private = b[:is_private].eq(nil)
+    not_private = b[:is_private].eq(nil).or(b[:is_private].eq(false))
     on_page = b[:home_id].eq(home_id).or(b[:to_id].eq(home_id))
     p_following = f[:home_id].eq(home_id).and(b[:home_id].eq(f[:friend_id])).and(not_private) # person or group, public blogs
     following = f[:home_id].eq(home_id).and(b[:to_id].eq(f[:friend_id])) # group or reply

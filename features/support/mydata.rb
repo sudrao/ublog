@@ -12,7 +12,6 @@ module MyCukeData
     else
       #raise "I don't know how to log in!"
 #      uri = URI.parse(current_path)
-#      Capybara.app_host = "http://#{name}:#{password}@localhost:#{uri.port}"
     end
       # Now actually send the basic auth
       page.driver.post current_path
