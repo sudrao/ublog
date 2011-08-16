@@ -1,4 +1,4 @@
-  @javascript
+  @javascript @CI
 Feature: Check javascript specific features
 
   Background:
