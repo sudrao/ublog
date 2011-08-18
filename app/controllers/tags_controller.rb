@@ -1,8 +1,10 @@
 class TagsController < ApplicationController
-  skip_before_filter :only => [:index]
+  skip_before_filter :authenticate, :only => [:index]
   before_filter :set_visitor_home, :except => [:index]
   before_filter :verify_owner, :only => [:destroy, :edit]
   caches_page :index
+  
+  respond_to :html, :js, :mobile, :xml
     
   # GET /tags
   # GET /tags.xml
@@ -31,17 +33,15 @@ class TagsController < ApplicationController
         @tagsrest << tag
       end
     end
-    
-    respond_to do |format|
-      format.html # index.html.erb
-      format.js {
-        if @tags24.length > 0
-          render :text => @tags24.inject("Recent tags: ") { |s, t| s + '<a href="' + tag_url(t) + '">'+ t.name + '</a> ' } + 
+    if @tags24.length > 0
+      js_response = @tags24.inject("Recent tags: ") { |s, t| s + '<a href="' + tag_url(t) + '">'+ t.name + '</a> ' } + 
           '<p> </p>'
-        else
-          render :text => ""
-        end 
-      }
+    else
+      js_response = ''
+    end
+
+    respond_with(@tags) do |format|
+      format.js { render :text => js_response, :layout => false }
       format.mobile { render :template => "tags/index.html.erb" }
       format.xml  { render :xml => @tags }
     end
@@ -67,11 +67,7 @@ class TagsController < ApplicationController
     @new_blog.home_id = @visitor_home.id
     @rss_display = true
     
-    respond_to do |format|
-      format.html
-      format.mobile
-      format.xml  { render :xml => @blogs }
-    end
+    respond_with(@tag)
   end
 
   
@@ -80,10 +76,7 @@ class TagsController < ApplicationController
   def new
     @tag = Tag.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @tag }
-    end
+    respond_with(@tag)
   end
 
   # POST /tags
@@ -94,7 +87,7 @@ class TagsController < ApplicationController
     @tagsub = Tagsub.new(:home_id => params[:home_id].to_i, 
                          :tag_id => params[:id].to_i)
 
-    respond_to do |format|
+    respond_with(@tagsub) do |format|
       if @tagsub.save
         flash[:notice] = 'Tag was successfully subscribed.'
         format.html { render :action => "index" }
@@ -117,7 +110,7 @@ class TagsController < ApplicationController
     @tags = Tag.find(:all)
     @home = Home.find(params[:home_id].to_i)
 
-    respond_to do |format|
+    respond_with(@tagsub) do |format|
       if @tagsub.save
         flash[:notice] = 'Tag was successfully subscribed.'
         format.html { render :action => "index" }
@@ -139,7 +132,7 @@ class TagsController < ApplicationController
     @tags = Tag.find(:all)
     @home = Home.find(params[:home_id].to_i)
 
-    respond_to do |format|
+    respond_with(nil) do |format|
       format.html { render :action => "index" }
       format.mobile { render :template => "tags/index.html.erb" }
       format.xml  { head :ok }

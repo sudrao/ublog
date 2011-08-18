@@ -16,11 +16,6 @@ class SessionsController < ApplicationController
   def create
     userid = params[:username]
     password = params[:password]
-    if (Rails.env.development? && userid == TEST_USER)
-      @user = session[:user] = userid
-      redirect_to homes_path
-      return @user
-    end
     if (corporate_auth(userid, password))
       session[:user] = userid
       if session[:first_url] && Home.find_by_ublog_name(session[:user])
@@ -39,8 +34,8 @@ class SessionsController < ApplicationController
   private
   
   def corporate_auth(userid, password)
-    if Rails.env.test?
-      # allow a few users for test environment: test0, test1 ... test9
+    if (Rails.env.test? || Rails.env.development?)
+      # allow a few users for dev and test environment: test0, test1 ... test9
       if (userid =~ /test\d/)
           return password == ('secret' + userid[/\d/]) # secret0, secret1, ...
       end

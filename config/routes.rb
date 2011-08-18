@@ -36,6 +36,6 @@ Ub3::Application.routes.draw do
 # Low priority routes
   # match on userid
   match ':vanity' => 'vanity#show'
-  match '' => 'homes#index'
+  root :to => 'homes#index'
 
 end

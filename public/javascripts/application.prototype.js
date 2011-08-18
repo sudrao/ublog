@@ -3,9 +3,10 @@
 
 // Periodically call and replace inner html
 document.observe("dom:loaded", function() {
-    $$('div.periodic-replace').each(function(name, index) {
-	    new Ajax.PeriodicalUpdater(this, readAttribute(this, 'data-url'), 
-		    { method: 'get', frequency: parseInt(readAttribute(this, 'data-frequency')) })
-    });
+	$$('div.periodic-replace').each(function(div, index) {
+		new Ajax.PeriodicalUpdater(div, div.readAttribute('data-url'),
+		 {method: 'get', frequency: parseInt(div.readAttribute('data-frequency')) });
+		 return false;
+	});
 });
 

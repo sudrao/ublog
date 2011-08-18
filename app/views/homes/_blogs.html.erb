@@ -1,9 +1,9 @@
-<% blog_partial = blog_partial; use_partial = blog_partial || "homes/blog_table.html.erb" -%>
-<% periodic_url = periodic_url; use_url = periodic_url || (home_path(@home) + ".js") -%>
+<% blog_partial = "homes/blog_table.html.erb" if local_assigns[:blog_partial].nil? %>
+<% periodic_url = (home_path(@home) + ".js") if local_assigns[:periodic_url].nil? %>
 <% if @page == 1 %>
-  <div id="blog_table" class="periodic-replace" data-frequency="60" data-url="#{use_url}" data-progress="true" >
-    <%= render :partial => use_partial, :locals => { :reply => reply } %>
+  <%= "<div id=\"blog_table\" class=\"periodic-replace\" data-frequency=\"60\" data-url=\"#{periodic_url}\" data-progress=\"true\" >".html_safe %>
+    <% render :partial => blog_partial, :locals => { :reply => reply } %>
   </div>
 <% else %>
-  <%= render :partial => use_partial, :locals => { :reply => reply } %>
+  <%= render :partial => blog_partial, :locals => { :reply => reply } %>
 <% end %>

@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   cache_sweeper :time_sweeper, :only => [:create]
   has_mobile_fu
   before_filter :authenticate
+  before_filter :check_and_set_js
 
   PAGE_SIZE = 25
   TEST_USER = "#{TESTUSER}"
@@ -74,4 +75,8 @@ class ApplicationController < ActionController::Base
     request.format = :json if request.path_parameters['format'] == 'json'
   end
 
+ # TODO: This next filter should not be needed
+  def check_and_set_js
+    request.format = :js if request.xhr?
+  end
 end
