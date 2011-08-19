@@ -16,7 +16,7 @@
  limitations under the License.
 -->
 <!-- $Id: tabular.xsl 1075192 2011-02-28 00:50:09Z uschindler $ -->
-<!-- $URL: https://svn.apache.org/repos/asf/lucene/dev/branches/lucene_solr_3_3/solr/src/webapp/web/admin/tabular.xsl $ -->
+<!-- $URL: http://svn.apache.org/repos/asf/lucene/dev/branches/lucene_solr_3_2/solr/src/webapp/web/admin/tabular.xsl $ -->
 
 
 <xsl:stylesheet

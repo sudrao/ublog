@@ -8,7 +8,7 @@ class Blog < ActiveRecord::Base
   has_many :uploads
 
   
-  acts_as_solr :fields => [:content], :auto_add => false, :auto_commit => false
+  acts_as_solr :fields => [:content], :auto_commit => true
   
   # Get the primary attachment for this blog  
   def attachment

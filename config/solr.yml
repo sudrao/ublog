@@ -5,6 +5,7 @@
 
 development:
   url: http://127.0.0.1:8982/solr
+  jvm_options: -Djava.util.logging.config.file=logging.properties
   
 test:
   url: http://127.0.0.1:8981/solr

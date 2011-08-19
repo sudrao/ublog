@@ -17,7 +17,7 @@ class Solr::Request::Standard < Solr::Request::Select
     :latitude, :longitude, :spellcheck]
   
   def initialize(params)
-    super(params[:radius].nil? ? 'standard' : 'geo')
+    super(params[:radius].nil? ? 'search' : 'geo')
     
     raise "Invalid parameters: #{(params.keys - VALID_PARAMS).join(',')}" unless 
       (params.keys - VALID_PARAMS).empty?

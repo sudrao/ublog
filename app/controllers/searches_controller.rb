@@ -17,14 +17,14 @@ class SearchesController < ApplicationController
     unless invalid_query = @query[/(^\*)|( +\*)/]
       @new_blog = Blog.new
       @new_blog.home_id = @home.id
-      result = Home.find_by_solr(@query, :limit => 500)
+      result = Home.find_by_solr("ublog_name: #{@query} OR name: #{@query}", :limit => 500)
       @users = result.docs.map { |home| home unless home.is_group and home.is_group == 1 }.compact
       @users.sort! {|u1, u2| u1.ublog_name <=> u2.ublog_name}
       @groups = result.docs.map { |home| home if home.is_group and home.is_group == 1 }.compact
       @groups.sort! {|u1, u2| u1.ublog_name <=> u2.ublog_name}
-      result = Blog.find_by_solr(@query, :limit => 500)
+      result = Blog.find_by_solr("content: #{@query}", :limit => 500)
       @blogs = result.docs.sort {|b1, b2| b2.created_at <=> b1.created_at}
-      result = Tag.find_by_solr(@query, :limit => 500)
+      result = Tag.find_by_solr("name: #{@query}", :limit => 500)
       @tags = result.docs.sort {|t1, t2| t1.name <=> t2.name}
     else
       flash[:error] = "Query word cannot start with a *"

@@ -48,6 +48,7 @@ class Solr::Request::Select < Solr::Request::Base
       end
     end
 
+    Rails.logger.debug "query: " + http_params.join("&")
     http_params.join("&")
   end
   
