@@ -18,6 +18,7 @@ class BlogsController < ApplicationController
     # Narrow, iframe, and mobile views use the same form
     request.format = :mobile if session[:narrow_view]
     request.format = :mobile if params[:return_format] == "iframe"
+    request.format = :html if request.format.js? # Return full html for ajax
     
     respond_to do |format|
       format.html # new.html.erb

@@ -32,6 +32,7 @@ Then /^I (?:|should )see (my|another user's) blog(?:| appear)$/ do |whose|
     message = BLOG2
   end
   if page.respond_to? :should
+#    puts page.html
     page.should have_content(message)
   else
     assert page.has_content?(message)
