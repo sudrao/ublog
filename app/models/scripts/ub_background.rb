@@ -1,4 +1,4 @@
-require 'yammer_api'
+require Rails.root.join('lib', 'yammer_api.rb')
 
 class UbBackground
   MAX_EMAIL_BLOGS = 1000
