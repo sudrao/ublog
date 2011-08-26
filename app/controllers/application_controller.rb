@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
   before_filter :check_and_set_js
 
   PAGE_SIZE = 25
-  TEST_USER = "#{TESTUSER}"
     
   protect_from_forgery
     
