@@ -5,3 +5,4 @@ tmp/
 solr
 .project
 public/assets/
+.sass-cache/
