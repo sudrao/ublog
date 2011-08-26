@@ -1,0 +1,60 @@
+<div id="top-bar">
+<p>
+<%= link_to('News', home_path(@news)) if @news %>&nbsp&nbsp
+<%= link_to('Feedback', home_path(@feedback)) if @feedback %>&nbsp&nbsp
+</p>
+</div>
+
+<div class="center">
+<p>
+  <h2>All public ublog messages</h2>
+  <span id="notice">
+    Use the "All" button on your home page to see all these plus your private messages.
+  </span>
+</p>
+</div>
+
+<div>
+
+<div>
+<%= render :partial => "homes/blogs.html.erb", :locals => { :reply => false, :periodic_url => (all_path + ".js")} %>
+<%= render :partial => "alls/pages.html.erb" %>
+</div>
+
+
+</div>
+<div>
+<br />
+<%= link_to('Back to my accounts', homes_path) %>
+</div>
+
+<div id="search">
+<% form_tag(search_path) do %>
+  <p>
+  Search for a ublog account<br />
+  * finds all
+  <%= text_field_tag :query %>
+  <%= submit_tag "Find now" %>
+  </p>
+<% end %>
+</div>
+
+<div id="footer">
+<p>ublog is developed and brought to you by the <a href="http://www.#{DOMAIN}.com">Ruby on Rails</a> group in Company.</p>
+</div>
+
+<div class="center">
+<% form_tag(all_path) do %>
+   <%= hidden_field_tag :mobile, in_mobile_view? ? "0" : "1" %>
+   <%= hidden_field_tag :narrow, "0" %>
+   <%= submit_tag "Set Mobile View" unless in_mobile_view? %>
+   <%= submit_tag "Set Desktop View" if in_mobile_view? %>
+<% end %>
+<% unless in_mobile_view? %>
+<% form_tag(all_path) do %>
+   <%= hidden_field_tag :mobile, "0" %>
+   <%= hidden_field_tag :narrow, "0" %>
+   <%= submit_tag "Set Normal View"  %>
+<% end %>
+<% end %>
+</div>

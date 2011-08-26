@@ -1,0 +1,13 @@
+<a href="#" onclick="Effect.toggle('compress_appear', 'appear', {afterFinish: function () {Form.Element.activate('web_addr');}}); return false;">Shrink my URL<br /></a>
+<div id="compress_appear" style="display:none;">
+<div id="compress">
+<%= form_tag "http://bit.#{DOMAIN}.com/set.js", 
+             :target => "compress-result" do %>
+  <%= label_tag "Input web address:" %>           
+  <%= text_field_tag "urlin" %>
+  <%= submit_tag "Shrink" %>
+<% end %>
+</div>
+<iframe id="compress-result" name="compress-result" 
+  style="width:600px;height:40px;border:0px"></iframe>
+</div>

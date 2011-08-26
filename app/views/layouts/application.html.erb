@@ -1,14 +1,36 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-  <title>Ublog</title>
+  <link rel="icon" type="image/png" href="/images/u.png">
+  <title>ublog<%= @title &&= " | #{@title}" %></title>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
+  <%= auto_discovery_link_tag(:atom, {:format => "atom"}, {:title => "#{@home.ublog_name}'s atom 1.0 feed"}) if @home %>
+  <%= auto_discovery_link_tag(:rss, {:format => "rss"}, {:title => "#{@home.ublog_name}'s rss 2.0 feed"}) if @home %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+<%= render :partial => "layouts/header.html.erb" %>
+
+<% if @rss_display %>
+<div id="rss-div">
+  <span class="rss-symbol">
+    <a href="#" onclick="Effect.toggle('rss_appear', 'appear'); return false;"><%= image_tag "feed.png", :title => "RSS feeds" %></a>
+  </span>
+  <div id="rss_appear" style="display:none;">
+     <div>
+       <b>Feed URL's for this page:</b><br />
+       <%= request.url + ".atom<br />" + request.url + ".rss" %>
+     </div>
+  </div>
+</div>
+<% end %>
+
+<p><span id="notice"><%= flash[:notice] %></span></p>
+<p><span id="error"><%= flash[:error] %></span></p>
+<%= yield  %>
 
 </body>
 </html>

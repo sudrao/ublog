@@ -1,0 +1,27 @@
+<a href="#" class="center" onmouseover="Effect.toggle('mygroups_list', 'blind'); return false;" onclick="Effect.toggle('mygroups_list', 'blind'); return false;">MyGroups</a>
+<%= link_to 'Subs', home_follow_path(@home) %>
+<a href="#" class="center" onclick="Effect.toggle('search_appear', 'appear', {afterFinish: function () {Form.Element.activate('search_query');}}); return false;">Search</a>
+<%= link_to "Guide", "http:/guide.#{mydomain()}.com/display/cpda/ublog" %>
+<br />
+<div id="search_appear" style="display:none;">
+<div id="search">
+<%= form_tag(search_path) do %>
+  <p>
+  Search for users, groups, messages, and tags<br />
+  Tip: to get more hits: use xxx* or OR between words<br />
+  <%= text_field_tag :query, "", :id => "search_query" %>
+  <%= submit_tag "Find now" %>
+  </p>
+<% end %>
+</div>
+</div>
+
+<div id="mygroups_list" style="display:none;">
+<div>
+<table>
+<% for group in @groups %>
+  <tr><td><%= link_to group.ublog_name, home_path(group) %></td></tr>
+<% end %>
+</table>
+</div>
+</div>

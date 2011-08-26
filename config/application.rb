@@ -41,5 +41,11 @@ module Ublog
 
     # Enable the asset pipeline
     config.assets.enabled = true
+
+    # Fixture replacement. Use machinist.
+    config.generators do |g|
+      g.fixture_replacement :machinist
+    end
+
   end
 end

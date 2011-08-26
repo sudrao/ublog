@@ -1,0 +1,83 @@
+<h2>Search Results</h2>
+
+<div id="search">
+<%= form_tag(search_path) do %>
+  <p>
+  Tip: to get more hits: use xxx* or OR between words<br />
+  <%= text_field_tag :query, @query %>
+  <%= submit_tag "Find now" %>
+  </p>
+<% end %>
+</div>
+
+<% if @users.length > 0 %>
+<a href="#" onclick="Effect.toggle('users_appear', 'appear'); return false;">Users: <%= @users.length %></a>
+<% else %>
+Users: 0
+<% end %>
+<div id="users_appear" style="display:none;">
+<div>
+<table>
+<% for home in @users %>
+<% next unless home %>
+<tr>
+  <td class="single-space"><%= (link_to h(home.ublog_name), home_path(home)) + ' -- ' + h(home.name) %></td>
+  <%= "<td>" + link_to('Destroy', home, :confirm => 'Are you sure?', :method => :delete) + "</td>" if @admin %>
+</tr>
+<% end %>
+</table>
+</div>
+</div>
+<br />
+
+<% if @groups.length > 0 %>
+<a href="#" onclick="Effect.toggle('groups_appear', 'appear'); return false;">Groups: <%= @groups.length %></a>
+<% else %>
+Groups: 0
+<% end %>
+<div id="groups_appear" style="display:none;">
+<div>
+<table>
+<% for home in @groups %>
+<% next unless home %>
+<tr>
+  <td class="single-space"><%= (link_to h(home.ublog_name), home_path(home)) + ' -- ' + h(home.name) %></td>
+  <%= "<td>" + link_to('Destroy', home, :confirm => 'Are you sure?', :method => :delete) + "</td>" if @admin or (home.owner == @user) %>
+</tr>
+<% end %>
+</table>
+</div>
+</div>
+<br />
+
+<% if @blogs.length > 0 %>
+<a href="#" onclick="Effect.toggle('blogs_appear', 'appear'); return false;">Messages: <%= @blogs.length %></a>
+<% else %>
+Messages: 0
+<% end %>
+<div id="blogs_appear" style="display:none;">
+<div>
+<%= render :partial => "homes/blog_table.html.erb", :locals => { :reply => true } %>
+</div>
+</div>
+<br />
+
+<% if @tags.length > 0 %>
+<a href="#" onclick="Effect.toggle('tags_appear', 'appear'); return false;">Tags: <%= @tags.length %></a>
+<% else %>
+Tags: 0
+<% end %>
+<div id="tags_appear" style="display:none;">
+<div>
+<table>
+<% for tag in @tags %>
+<tr>
+  <td class="single-space"><%= (link_to h(tag.name), tag_path(tag)) + " " %></td>
+</tr>
+<% end %>
+</table>
+</div>
+</div>
+<br />
+<br />
+<%= link_to('Back to my account', homes_path) %>

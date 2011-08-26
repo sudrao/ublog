@@ -1,0 +1,42 @@
+<% site = @twitter ? "Twitter" : "Yammer" %>
+<% entity = @twitter ? "ublog" : "the Company Network" %>
+<% screen_name_entry = @twitter ? ". Enter your Twitter screen name" : "" %>
+
+<h2><%=h "Enable #{site} access for " + @visitor_home.ublog_name %></h2>
+
+Step 1: Go to the <%= site %> authorization link shown below.<br /><br />
+
+Step 2: Log into <%= site %>.<br /><br />
+
+<%= "Step 3: Click the button there that asks you to authorize #{entity} on #{site}.<br /><br />" %>
+
+Step 4: Copy the verifier code shown after that.<br /><br />
+
+Step 5: Come back to this screen and paste the verifier code into the box below<%= screen_name_entry %> and click the "Enable Now" button.
+<br /><br />
+
+<%= site %> authorization link: 
+<%= link_to("Click here", @link, :target => "_blank") %><br /><br />
+
+<% if @twitter %>
+  <% form_tag twitter_path do %>
+  <%= label_tag "Enter verifier code obtained from that site:" %>
+  <%= text_field_tag "verifier" %>
+  <%= label_tag "Enter your Twitter screen name:" %>
+  <%= text_field_tag "twitter_name" %>
+  <%= submit_tag "Enable Now" %>
+  <% end %>
+<% else %>
+  <% form_tag yammer_path do %>
+  <%= label_tag "Enter verifier code obtained from that site:" %>
+  <%= text_field_tag "verifier" %>
+  <%= submit_tag "Enable Now" %>
+  <% end %>
+<% end %>
+
+<br />
+<br />
+<br />
+<%= link_to('Cancel', home_path(@visitor_home)) %>
+
+

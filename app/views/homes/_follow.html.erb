@@ -1,0 +1,22 @@
+<% if @friend %>
+<%= form_for(@friend) do |f| %>
+  <%= render "shared/error_messages", :target => @friend %>
+
+  <p>
+    <%= f.hidden_field :friend_id %>
+  </p>
+  <p>
+    <%= f.hidden_field :home_id %>
+  </p>
+  <p>
+    <%= f.hidden_field :email_notify %>
+  </p>
+  <p>
+    <%= f.hidden_field :is_approved %>
+  </p>
+  <p>
+    <%= f.submit "Follow this account", :disabled => @already_following %>
+    <%= link_to("Stop following", @friend, :method => :delete) if @already_following %>
+  </p>
+<% end %>
+<% end %>
