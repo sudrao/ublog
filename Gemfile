@@ -18,6 +18,12 @@ end
 
 gem 'jquery-rails'
 
+# app gems
+gem 'net-ldap'
+gem 'oauth'
+gem 'hpricot'
+gem 'paperclip'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -29,5 +35,12 @@ gem 'jquery-rails'
 
 group :test do
   # Pretty printed test output
-  gem 'turn', :require => false
+  # gem 'turn', :require => false
+  gem "rspec-rails", "~> 2.6"
+  gem 'machinist', '>= 2.0.0.beta2'
+  gem 'cucumber-rails'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'fabrication'
+  gem 'escape_utils' # to suppress rack/utils regexp warning
 end
