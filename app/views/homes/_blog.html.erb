@@ -25,9 +25,9 @@
     <td>
     <% if reply %>
     <% if blog.to && (blog.to.is_group == 1) %>
-      <%= link_to "g-reply", {:controller => 'blogs', :action => 'new', :home_id => author_id.to_s, :to_id => blog.to.id.to_s, :thread => (blog.thread || blog.id).to_s, :prev => blog.id.to_s, :return_id => home_id}, :onclick => "Modalbox.show(this.href, {title: 'ublog reply', width: 600}); return false;" %>
+      <%= link_to "g-reply", {:controller => 'blogs', :action => 'new', :home_id => author_id.to_s, :to_id => blog.to.id.to_s, :thread => (blog.thread || blog.id).to_s, :prev => blog.id.to_s, :return_id => home_id}, :class => "replier" %>
     <% else %>
-      <%= link_to "reply", {:controller => 'blogs', :action => 'new', :home_id => author_id.to_s, :to_id => origin.id.to_s, :thread => (blog.thread || blog.id).to_s, :prev => blog.id.to_s, :return_id => home_id}, :onclick => "Modalbox.show(this.href, {title: 'ublog reply', width: 600}); return false;" %>
+      <%= link_to "reply", {:controller => 'blogs', :action => 'new', :home_id => author_id.to_s, :to_id => origin.id.to_s, :thread => (blog.thread || blog.id).to_s, :prev => blog.id.to_s, :return_id => home_id}, :class => "replier" %>
     <% end %>
     <% end %>
     </td>
