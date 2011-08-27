@@ -10,10 +10,10 @@
       <span class="time-stamp"><%= time_ago_in_words(created_time)+ " ago" %>
       <%= '<span class="time-stamp"> from ' + h(blog.source) + " </span>" unless blog.source.blank? %>
       <% if (origin.ublog_name == @user) or (@proxy && (origin.proxy == @user)) %>
-        <%= link_to image_tag("/images/delete.png", :class => "no-border", :title => "Delete"), blog, :confirm => 'Are you sure you want to delete this message?', :method => :delete %>
+        <%= link_to image_tag(asset_path "delete.png", :class => "no-border", :title => "Delete"), blog, :confirm => 'Are you sure you want to delete this message?', :method => :delete %>
       <% end %>
       <% if blog.thread and @nothread.nil? %>
-        <%= link_to image_tag("/images/ub_thread.png", :class => "no-border", :title => "Thread"), home_thread_path(@home, blog.thread) %>
+        <%= link_to image_tag(asset_path "ub_thread.png", :class => "no-border", :title => "Thread"), home_thread_path(@home, blog.thread) %>
       <% end %>
       <% uploads = blog.uploads %>
       <% unless uploads.empty? %>

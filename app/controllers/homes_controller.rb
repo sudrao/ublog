@@ -14,7 +14,7 @@ class HomesController < ApplicationController
       @home = Home.new(:ublog_name => @user, :owner => @user, :is_private => 0,
       :name => LdapGet.name(@user), :notify_calendar => 0,
       :is_group => 0)
-      @home.name = "Test user" if @user == TEST_USER
+      @home.name = "Test user" if @user =~ /test[0-9]/
     end
     respond_to do |format|
       if (@home)
