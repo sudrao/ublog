@@ -1,7 +1,7 @@
 class Upload < ActiveRecord::Base
   has_attached_file :attachment, :styles => { :thumb => "50x50>" },
-                    :url => "/assets/uploads/:id/:style/:basename.:extension",
-                    :path => ":rails_root/public/assets/uploads/:id/:style/:basename.:extension"
+                    :url => "/uploads/uploads/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/uploads/uploads/:id/:style/:basename.:extension"
                   
   validates_attachment_presence :attachment
   validates_attachment_size :attachment, :less_than => 5.megabytes

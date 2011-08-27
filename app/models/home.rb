@@ -5,8 +5,8 @@ class Home < ActiveRecord::Base
   validates :email_list, :format => {:with => /\A[^ $~!@#%^&*+=(){};':",?<>.]*\Z/, :message => " cannot have @ or blanks or punctuation. Remove them. Check for trailing blanks."}
  
   has_attached_file :photo, :styles => {:thumb => "50x50>" , :small => "200x200>" },
-                    :url => "/assets/homes/:id/:style/:basename.:extension",
-                    :path => ":rails_root/public/assets/homes/:id/:style/:basename.:extension",
+                    :url => "/uploads/homes/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/uploads/homes/:id/:style/:basename.:extension",
                     :default_url => "ublog_default_thumb.png"
                     
   validates_attachment_size :photo, :less_than => 5.megabytes
