@@ -6,9 +6,9 @@ ublog (pronounced You-blog) is a micro-blogging application meant for corporate 
 The original (Rails 2.3.2) source code was a contribution from Cisco Systems, Inc. and is 
 also available here. Select rails2 branch on sudrao/ublog.
 
-The current source is the Rails 3 version.
+The current source is the Rails 3.1 version.
 
-STATUS: Upgrade to Rails 3 in progress. Not all features are working as they were before.
+STATUS: Upgrade to Rails 3.1 mostly complete. Not all features are tested yet.
 
 LICENSE: MIT
 
